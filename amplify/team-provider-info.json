@@ -10,6 +10,11 @@
       "StackName": "amplify-activitytracker-dev-234703",
       "StackId": "arn:aws:cloudformation:us-east-1:831564422091:stack/amplify-activitytracker-dev-234703/b3021490-6e27-11eb-b05c-0ecb50cc3755",
       "AmplifyAppId": "d2fqzx7omp4akm"
+    },
+    "categories": {
+      "auth": {
+        "activitytrackerbf35f7f5": {}
+      }
     }
   }
 }
