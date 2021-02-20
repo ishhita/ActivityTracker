@@ -6,9 +6,12 @@ import {withOAuth} from 'aws-amplify-react-native';
 import config from './aws-exports';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
+import Home from './Home';
+import Splash from './Splash';
 
-async function urlOpener(url, redirectUrl) {
+async function urlOpener(url: string, redirectUrl: string) {
   await InAppBrowser.isAvailable();
+  // @ts-ignore
   const {type, url: newUrl} = await InAppBrowser.openAuth(url, redirectUrl, {
     showTitle: false,
     enableUrlBarHiding: true,
@@ -29,40 +32,23 @@ Amplify.configure({
   },
 });
 
-function HomeScreen() {
-  return (
-    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-      <Text>logged in </Text>
-    </View>
-  );
-}
-
 const Stack = createStackNavigator();
 
 const App = (props: any) => {
   const {oAuthUser, googleSignIn, signOut} = props;
+  const email = oAuthUser?.attributes?.email;
 
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        {oAuthUser ? (
-          <Stack.Screen name="Home" component={HomeScreen} />
+        {email ? (
+          <Stack.Screen name="Home">
+            {(props) => <Home {...props} email={email} />}
+          </Stack.Screen>
         ) : (
-          <Stack.Screen name="Home" component={HomeScreen} />
+          <Stack.Screen name="Home" component={Splash} />
         )}
       </Stack.Navigator>
-      <View>
-        <Text>
-          User: {oAuthUser ? JSON.stringify(oAuthUser.attributes) : 'None'}
-        </Text>
-        {oAuthUser ? (
-          <Button title="Sign Out" onPress={signOut} />
-        ) : (
-          <>
-            <Button title="Google" onPress={googleSignIn} />
-          </>
-        )}
-      </View>
     </NavigationContainer>
   );
 };
