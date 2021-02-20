@@ -1,7 +1,7 @@
 {
     "paths": [
         {
-            "name": "/user/{id}",
+            "name": "/user/{email}",
             "lambdaFunction": "getUserProfile",
             "privacy": {
                 "private": true,
@@ -16,34 +16,27 @@
             "policyResourceName": "/user/*"
         },
         {
-            "name": "/activities/{email}/{activity}",
-            "lambdaFunction": "getActivities",
-            "privacy": {
-                "private": true,
-                "auth": [
-                    "/POST",
-                    "/GET",
-                    "/PUT",
-                    "/PATCH",
-                    "/DELETE"
-                ]
-            },
-            "policyResourceName": "/activities/*/*"
-        },
-        {
             "name": "/log/{activity}",
             "lambdaFunction": "logActivity",
             "privacy": {
                 "private": true,
                 "auth": [
                     "/POST",
-                    "/GET",
-                    "/PUT",
-                    "/PATCH",
-                    "/DELETE"
+                    "/GET"
                 ]
             },
             "policyResourceName": "/log/*"
+        },
+        {
+            "name": "/activities/{email}/{activity}",
+            "lambdaFunction": "getActivities",
+            "privacy": {
+                "private": true,
+                "auth": [
+                    "/GET"
+                ]
+            },
+            "policyResourceName": "/activities/*/*"
         },
         {
             "name": "/referral",
@@ -51,11 +44,8 @@
             "privacy": {
                 "private": true,
                 "auth": [
-                    "/POST",
-                    "/GET",
                     "/PUT",
-                    "/PATCH",
-                    "/DELETE"
+                    "/PATCH"
                 ]
             },
             "policyResourceName": "/referral"
@@ -68,10 +58,10 @@
             "lambdaFunction": "getUserProfile"
         },
         {
-            "lambdaFunction": "getActivities"
+            "lambdaFunction": "logActivity"
         },
         {
-            "lambdaFunction": "logActivity"
+            "lambdaFunction": "getActivities"
         },
         {
             "lambdaFunction": "registerReferral"
@@ -94,7 +84,7 @@
         },
         {
             "category": "function",
-            "resourceName": "getActivities",
+            "resourceName": "logActivity",
             "attributes": [
                 "Name",
                 "Arn"
@@ -102,7 +92,7 @@
         },
         {
             "category": "function",
-            "resourceName": "logActivity",
+            "resourceName": "getActivities",
             "attributes": [
                 "Name",
                 "Arn"
@@ -116,5 +106,6 @@
                 "Arn"
             ]
         }
-    ]
+    ],
+    "uuid": "9fdf674b"
 }
