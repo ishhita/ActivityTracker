@@ -1,0 +1,120 @@
+{
+    "paths": [
+        {
+            "name": "/user/{id}",
+            "lambdaFunction": "getUserProfile",
+            "privacy": {
+                "private": true,
+                "auth": [
+                    "/POST",
+                    "/GET",
+                    "/PUT",
+                    "/PATCH",
+                    "/DELETE"
+                ]
+            },
+            "policyResourceName": "/user/*"
+        },
+        {
+            "name": "/activities/{email}/{activity}",
+            "lambdaFunction": "getActivities",
+            "privacy": {
+                "private": true,
+                "auth": [
+                    "/POST",
+                    "/GET",
+                    "/PUT",
+                    "/PATCH",
+                    "/DELETE"
+                ]
+            },
+            "policyResourceName": "/activities/*/*"
+        },
+        {
+            "name": "/log/{activity}",
+            "lambdaFunction": "logActivity",
+            "privacy": {
+                "private": true,
+                "auth": [
+                    "/POST",
+                    "/GET",
+                    "/PUT",
+                    "/PATCH",
+                    "/DELETE"
+                ]
+            },
+            "policyResourceName": "/log/*"
+        },
+        {
+            "name": "/referral",
+            "lambdaFunction": "registerReferral",
+            "privacy": {
+                "private": true,
+                "auth": [
+                    "/POST",
+                    "/GET",
+                    "/PUT",
+                    "/PATCH",
+                    "/DELETE"
+                ]
+            },
+            "policyResourceName": "/referral"
+        }
+    ],
+    "resourceName": "activityStore",
+    "apiName": "activityStore",
+    "functionArns": [
+        {
+            "lambdaFunction": "getUserProfile"
+        },
+        {
+            "lambdaFunction": "getActivities"
+        },
+        {
+            "lambdaFunction": "logActivity"
+        },
+        {
+            "lambdaFunction": "registerReferral"
+        }
+    ],
+    "privacy": {
+        "auth": 4,
+        "unauth": 0,
+        "authRoleName": "amplify-activitytracker-dev-234703-authRole",
+        "unAuthRoleName": "amplify-activitytracker-dev-234703-unauthRole"
+    },
+    "dependsOn": [
+        {
+            "category": "function",
+            "resourceName": "getUserProfile",
+            "attributes": [
+                "Name",
+                "Arn"
+            ]
+        },
+        {
+            "category": "function",
+            "resourceName": "getActivities",
+            "attributes": [
+                "Name",
+                "Arn"
+            ]
+        },
+        {
+            "category": "function",
+            "resourceName": "logActivity",
+            "attributes": [
+                "Name",
+                "Arn"
+            ]
+        },
+        {
+            "category": "function",
+            "resourceName": "registerReferral",
+            "attributes": [
+                "Name",
+                "Arn"
+            ]
+        }
+    ]
+}

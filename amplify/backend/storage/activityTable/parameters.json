@@ -1,0 +1,7 @@
+{
+    "tableName": "activityTable",
+    "partitionKeyName": "pk",
+    "partitionKeyType": "S",
+    "sortKeyName": "sk",
+    "sortKeyType": "S"
+}
