@@ -64,7 +64,7 @@
         },
         {
           "category": "function",
-          "resourceName": "getActivities",
+          "resourceName": "logActivity",
           "attributes": [
             "Name",
             "Arn"
@@ -72,7 +72,7 @@
         },
         {
           "category": "function",
-          "resourceName": "logActivity",
+          "resourceName": "getActivities",
           "attributes": [
             "Name",
             "Arn"
