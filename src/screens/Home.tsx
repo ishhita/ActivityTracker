@@ -1,10 +1,14 @@
-import {actionIcon} from '@aws-amplify/ui';
 import React, {useEffect, useState} from 'react';
 import {Button, StyleSheet, Text, View} from 'react-native';
-import api from './API';
-import defaultActivities from './DefaultActivities';
+import {StackNavigationProp} from '@react-navigation/stack';
+
+import api from '../api/API';
+import {StackParams} from '../index';
+import defaultActivities from '../utils/default-activity-list';
+
 type Props = {
   email: string;
+  navigation: StackNavigationProp<StackParams, 'Home'>;
 };
 
 export default function Home(props: Props) {
@@ -13,17 +17,17 @@ export default function Home(props: Props) {
   const fetchUser = async () => {
     try {
       const user = await api.get(`/user/${props.email}`);
-      console.log({user});
+
       if (Object.keys(user).length === 0) {
         setMessage('First time user, creating a profile...');
-        const response = await api.put(`/user/${props.email}`, {
+        await api.put(`/user/${props.email}`, {
           pk: props.email,
           sk: 'profile',
           proDate: 0,
           activities: [],
           friends: [],
         });
-        console.log('response', response);
+
         setMessage('Profile created!');
       }
     } catch (error) {
@@ -51,9 +55,16 @@ export default function Home(props: Props) {
           flexDirection: 'row',
           flexWrap: 'wrap',
         }}>
-        {defaultActivities.map((activity) => (
-          <View style={{margin: 4, padding: 8}} key={activity.id}>
-            <Button onPress={() => {}} title={activity.name}></Button>
+        {defaultActivities.map(({id, name}) => (
+          <View style={{margin: 4, padding: 8}} key={id}>
+            <Button
+              onPress={() => {
+                props.navigation.navigate('Activity', {
+                  id: id,
+                  name: name,
+                });
+              }}
+              title={name}></Button>
           </View>
         ))}
       </View>
