@@ -1,19 +1,18 @@
-type Activity = {
-  name: string;
-  id: string;
-  logs: {duration: number; timestamp: string}[]
-}
+import { Activity, User } from "./models"
 
-type State = {
-  user: {
-    email: string
-  },
+export type State = {
+  email: string;
   activities: {
-    [id: string]: Activity
+    [id: string]: Activity & {logs: {duration: number; timestamp: string}[]}
   },
+  friends: User['friends'],
+  proDate: number
 }
 
+export type Action<T extends AllActions> = {type: T} & {payload: ActionMap[T]};
 // todo model api responses here
-type ActionMap = {
+export type ActionMap = {
+  'SET_USER': User,
+};
 
-}
+export type AllActions = keyof ActionMap ;

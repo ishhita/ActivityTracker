@@ -1,14 +1,26 @@
+import { Action, ActionMap, AllActions, State } from "../../types/types";
 
 export const initialState: State = {
-  user: {
-    email: ''
-  },
-  activities: {}
+  email: '',
+  activities: {},
+  friends: {},
+  proDate: 0
 };
 
-export const reducer = (state: State, action: any) => {
+
+export function reducer<T extends AllActions>(state: State, action: Action<T>) {
   switch(action.type) {
-    case 'dummy': return state;
+    case 'SET_USER': {
+      const {pk, sk, ...rest}  = action.payload;
+      
+    const bb = {
+      ...state,
+      ...rest,
+      email: pk
+    };
+
+      return bb;
+    };
     default: return state;
   }
 }

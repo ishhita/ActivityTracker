@@ -16,18 +16,6 @@
             "policyResourceName": "/user/*"
         },
         {
-            "name": "/log/{activity}",
-            "lambdaFunction": "logActivity",
-            "privacy": {
-                "private": true,
-                "auth": [
-                    "/POST",
-                    "/GET"
-                ]
-            },
-            "policyResourceName": "/log/*"
-        },
-        {
             "name": "/activities/{email}/{activity}",
             "lambdaFunction": "getActivities",
             "privacy": {
@@ -49,6 +37,18 @@
                 ]
             },
             "policyResourceName": "/referral"
+        },
+        {
+            "name": "/log",
+            "lambdaFunction": "logActivity",
+            "privacy": {
+                "private": true,
+                "auth": [
+                    "/POST",
+                    "/GET"
+                ]
+            },
+            "policyResourceName": "/log"
         }
     ],
     "resourceName": "activityStore",
@@ -58,13 +58,13 @@
             "lambdaFunction": "getUserProfile"
         },
         {
-            "lambdaFunction": "logActivity"
-        },
-        {
             "lambdaFunction": "getActivities"
         },
         {
             "lambdaFunction": "registerReferral"
+        },
+        {
+            "lambdaFunction": "logActivity"
         }
     ],
     "privacy": {
@@ -77,14 +77,6 @@
         {
             "category": "function",
             "resourceName": "getUserProfile",
-            "attributes": [
-                "Name",
-                "Arn"
-            ]
-        },
-        {
-            "category": "function",
-            "resourceName": "logActivity",
             "attributes": [
                 "Name",
                 "Arn"
@@ -105,7 +97,15 @@
                 "Name",
                 "Arn"
             ]
+        },
+        {
+            "category": "function",
+            "resourceName": "logActivity",
+            "attributes": [
+                "Name",
+                "Arn"
+            ]
         }
     ],
-    "uuid": "9fdf674b"
+    "uuid": "517c45f0"
 }

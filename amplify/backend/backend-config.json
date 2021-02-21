@@ -36,17 +36,47 @@
     "getActivities": {
       "build": true,
       "providerPlugin": "awscloudformation",
-      "service": "Lambda"
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "storage",
+          "resourceName": "activityTable",
+          "attributes": [
+            "Name",
+            "Arn"
+          ]
+        }
+      ]
     },
     "logActivity": {
       "build": true,
       "providerPlugin": "awscloudformation",
-      "service": "Lambda"
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "storage",
+          "resourceName": "activityTable",
+          "attributes": [
+            "Name",
+            "Arn"
+          ]
+        }
+      ]
     },
     "registerReferral": {
       "build": true,
       "providerPlugin": "awscloudformation",
-      "service": "Lambda"
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "storage",
+          "resourceName": "activityTable",
+          "attributes": [
+            "Name",
+            "Arn"
+          ]
+        }
+      ]
     }
   },
   "api": {
@@ -64,14 +94,6 @@
         },
         {
           "category": "function",
-          "resourceName": "logActivity",
-          "attributes": [
-            "Name",
-            "Arn"
-          ]
-        },
-        {
-          "category": "function",
           "resourceName": "getActivities",
           "attributes": [
             "Name",
@@ -81,6 +103,14 @@
         {
           "category": "function",
           "resourceName": "registerReferral",
+          "attributes": [
+            "Name",
+            "Arn"
+          ]
+        },
+        {
+          "category": "function",
+          "resourceName": "logActivity",
           "attributes": [
             "Name",
             "Arn"
