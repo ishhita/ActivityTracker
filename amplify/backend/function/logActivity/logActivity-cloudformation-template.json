@@ -15,6 +15,22 @@
     },
     "s3Key": {
       "Type": "String"
+    },
+    "storageactivityTableName": {
+      "Type": "String",
+      "Default": "storageactivityTableName"
+    },
+    "storageactivityTableArn": {
+      "Type": "String",
+      "Default": "storageactivityTableArn"
+    },
+    "apiactivityStoreApiName": {
+      "Type": "String",
+      "Default": "apiactivityStoreApiName"
+    },
+    "apiactivityStoreApiId": {
+      "Type": "String",
+      "Default": "apiactivityStoreApiId"
     }
   },
   "Conditions": {
@@ -69,6 +85,18 @@
             },
             "REGION": {
               "Ref": "AWS::Region"
+            },
+            "STORAGE_ACTIVITYTABLE_NAME": {
+              "Ref": "storageactivityTableName"
+            },
+            "STORAGE_ACTIVITYTABLE_ARN": {
+              "Ref": "storageactivityTableArn"
+            },
+            "API_ACTIVITYSTORE_APINAME": {
+              "Ref": "apiactivityStoreApiName"
+            },
+            "API_ACTIVITYSTORE_APIID": {
+              "Ref": "apiactivityStoreApiId"
             }
           }
         },
@@ -160,6 +188,55 @@
                   }
                 ]
               }
+            }
+          ]
+        }
+      }
+    },
+    "AmplifyResourcesPolicy": {
+      "DependsOn": [
+        "LambdaExecutionRole"
+      ],
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyName": "amplify-lambda-execution-policy",
+        "Roles": [
+          {
+            "Ref": "LambdaExecutionRole"
+          }
+        ],
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "dynamodb:Put*",
+                "dynamodb:Create*",
+                "dynamodb:BatchWriteItem",
+                "dynamodb:Get*",
+                "dynamodb:BatchGetItem",
+                "dynamodb:List*",
+                "dynamodb:Describe*",
+                "dynamodb:Scan",
+                "dynamodb:Query"
+              ],
+              "Resource": [
+                {
+                  "Ref": "storageactivityTableArn"
+                },
+                {
+                  "Fn::Join": [
+                    "/",
+                    [
+                      {
+                        "Ref": "storageactivityTableArn"
+                      },
+                      "index/*"
+                    ]
+                  ]
+                }
+              ]
             }
           ]
         }

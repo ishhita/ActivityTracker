@@ -2,9 +2,11 @@ import React, {useEffect, useState} from 'react';
 import {Button, StyleSheet, Text, View} from 'react-native';
 import {StackNavigationProp} from '@react-navigation/stack';
 
-import api from '../api/API';
+import api from '../api/ApiCaller';
 import {StackParams} from '../index';
 import defaultActivities from '../utils/default-activity-list';
+import {createUser, getUser} from '../api/Api';
+import {useAppState} from '../state/context';
 
 type Props = {
   email: string;
@@ -12,24 +14,29 @@ type Props = {
 };
 
 export default function Home(props: Props) {
-  const [user, setUser] = useState({});
+  const {dispatch} = useAppState();
   const [message, setMessage] = useState('');
+
   const fetchUser = async () => {
     try {
-      const user = await api.get(`/user/${props.email}`);
+      const user = await getUser(props.email);
 
-      if (Object.keys(user).length === 0) {
-        setMessage('First time user, creating a profile...');
-        await api.put(`/user/${props.email}`, {
-          pk: props.email,
-          sk: 'profile',
-          proDate: 0,
-          activities: [],
-          friends: [],
-        });
-
-        setMessage('Profile created!');
+      if (Object.keys(user).length !== 0) {
+        dispatch({type: 'SET_USER', payload: user});
+        return;
       }
+
+      setMessage('First time user, creating a profile...');
+      const userPayload = {
+        pk: props.email,
+        sk: 'profile',
+        proDate: 0,
+        activities: [],
+        friends: {},
+      };
+      await createUser(userPayload);
+      setMessage('Profile created!');
+      dispatch({type: 'SET_USER', payload: userPayload});
     } catch (error) {
       console.log(JSON.stringify(error));
     }

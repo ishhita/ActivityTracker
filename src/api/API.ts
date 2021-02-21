@@ -1,17 +1,8 @@
-import API from '@aws-amplify/api';
 
-const api = () => {
-  const apiName = 'activityStore';
+import { ActivityEvent, User } from '../../types/models';
+import APICaller from './ApiCaller';
 
-  return {
-    get: (path: string) => API.get(apiName, path, {}),
-    put: (path: string, body: any) => API.put(apiName, path, {
-      body
-    }),
-    post: (path: string, body: any) => API.post(apiName, path, {
-      body
-    })
-  }
-}
+export const getUser = (email: string): Promise<User | {}> => APICaller.get(`/user/${email}`);
+export const createUser = (user: User) => APICaller.put(`/user/${user.pk}`, user);
+export const logActivity = (event: ActivityEvent) => APICaller.post('/log/activity', event);
 
-export default api();

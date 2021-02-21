@@ -1,11 +1,12 @@
-import React, {Dispatch, useContext, useMemo, useReducer} from 'react';
+import React, {useContext, useMemo, useReducer} from 'react';
 import {initialState, reducer} from './reducer';
 
-const Context = React.createContext([] as (State | React.Dispatch<any>)[]);
+const Context = React.createContext([]);
 
 const StateProvider: React.FC = (props) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const value = useMemo(() => [state, dispatch], [state]);
+  //@ts-ignore
   return <Context.Provider value={value}>{props.children}</Context.Provider>;
 };
 

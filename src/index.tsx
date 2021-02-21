@@ -46,8 +46,8 @@ const App = (props: any) => {
   const {oAuthUser} = props;
   const email = oAuthUser?.attributes?.email;
   return (
-    <NavigationContainer>
-      <StateProvider>
+    <StateProvider>
+      <NavigationContainer>
         <Stack.Navigator>
           {email ? (
             <>
@@ -60,8 +60,8 @@ const App = (props: any) => {
             <Stack.Screen name="Splash" component={Splash} />
           )}
         </Stack.Navigator>
-      </StateProvider>
-    </NavigationContainer>
+      </NavigationContainer>
+    </StateProvider>
   );
 };
 
