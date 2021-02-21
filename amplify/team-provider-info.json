@@ -30,7 +30,7 @@
         },
         "getUserProfile": {
           "deploymentBucketName": "amplify-activitytracker-dev-234703-deployment",
-          "s3Key": "amplify-builds/getUserProfile-4d744d6e693475666e4d-build.zip"
+          "s3Key": "amplify-builds/getUserProfile-6b64506b38536a364269-build.zip"
         }
       }
     }
