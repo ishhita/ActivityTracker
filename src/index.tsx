@@ -6,8 +6,9 @@ import {withOAuth} from 'aws-amplify-react-native';
 import config from './aws-exports';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-import Home from './Home';
-import Splash from './Splash';
+import Home from './screens/Home';
+import Splash from './screens/Splash';
+import Activity from './screens/Activity';
 
 async function urlOpener(url: string, redirectUrl: string) {
   await InAppBrowser.isAvailable();
@@ -32,7 +33,12 @@ Amplify.configure({
   },
 });
 
-const Stack = createStackNavigator();
+export type StackParams = {
+  Home: undefined;
+  Splash: undefined;
+  Activity: {id: string; name: string};
+};
+const Stack = createStackNavigator<StackParams>();
 
 const App = (props: any) => {
   const {oAuthUser, googleSignIn, signOut} = props;
@@ -42,11 +48,14 @@ const App = (props: any) => {
     <NavigationContainer>
       <Stack.Navigator>
         {email ? (
-          <Stack.Screen name="Home">
-            {(props) => <Home {...props} email={email} />}
-          </Stack.Screen>
+          <>
+            <Stack.Screen name="Home">
+              {(props) => <Home {...props} email={email} />}
+            </Stack.Screen>
+            <Stack.Screen name="Activity" component={Activity}></Stack.Screen>
+          </>
         ) : (
-          <Stack.Screen name="Home" component={Splash} />
+          <Stack.Screen name="Splash" component={Splash} />
         )}
       </Stack.Navigator>
     </NavigationContainer>
