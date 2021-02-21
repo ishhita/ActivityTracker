@@ -10,7 +10,7 @@ import Home from './screens/Home';
 import Splash from './screens/Splash';
 import Activity from './screens/Activity';
 import {initialState, reducer} from './state/reducer';
-import StateProvider, {useAppState} from './providers/context';
+import StateProvider, {useAppState} from './state/context';
 
 async function urlOpener(url: string, redirectUrl: string) {
   await InAppBrowser.isAvailable();

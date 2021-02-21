@@ -1,5 +1,5 @@
 import React, {Dispatch, useContext, useMemo, useReducer} from 'react';
-import {initialState, reducer} from '../state/reducer';
+import {initialState, reducer} from './reducer';
 
 const Context = React.createContext([] as (State | React.Dispatch<any>)[]);
 
