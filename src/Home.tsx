@@ -1,6 +1,8 @@
+import {actionIcon} from '@aws-amplify/ui';
 import React, {useEffect, useState} from 'react';
-import {Button, Text, View} from 'react-native';
+import {Button, StyleSheet, Text, View} from 'react-native';
 import api from './API';
+import defaultActivities from './DefaultActivities';
 type Props = {
   email: string;
 };
@@ -37,6 +39,24 @@ export default function Home(props: Props) {
       <Text style={{color: 'blue', fontSize: 30, textAlign: 'center'}}>
         {message}
       </Text>
+      <View
+        style={{
+          height: StyleSheet.hairlineWidth,
+          backgroundColor: 'brown',
+        }}></View>
+      <Text>Pick a new activity</Text>
+      <View
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          flexWrap: 'wrap',
+        }}>
+        {defaultActivities.map((activity) => (
+          <View style={{margin: 4, padding: 8}} key={activity.id}>
+            <Button onPress={() => {}} title={activity.name}></Button>
+          </View>
+        ))}
+      </View>
     </View>
   );
 }
