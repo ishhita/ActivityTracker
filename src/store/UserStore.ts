@@ -13,7 +13,7 @@ interface UserState extends User {
   loading: false;
   setUser: (user: User) => void;
   markActivityFav: (activityId: string) => void;
-  getUser: (pk: string) => void;
+  getUser: (pk: string) => Promise<UserState | {}>;
 }
 
 export const useProfile = create<UserState>((set, get) => ({
@@ -22,7 +22,9 @@ export const useProfile = create<UserState>((set, get) => ({
     if (!get().pk) {
       const user = await getUser(pk);
       set(user);
+      return user;
     }
+    return get();
   },
 
   async setUser(user) {
@@ -37,6 +39,7 @@ export const useProfile = create<UserState>((set, get) => ({
       activities: {...get().activities, [id]: []},
       proDate: get().proDate,
     };
+    console.log(newUser);
     await createUser(newUser);
 
     set((state) => ({

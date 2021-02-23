@@ -1,7 +1,8 @@
 import React from 'react';
-import {Button, StyleSheet, Text, View} from 'react-native';
+import {Button, FlatList, StyleSheet, Text, View} from 'react-native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RouteProp} from '@react-navigation/native';
+import ago from 's-ago';
 
 import {StackParams} from '..';
 import {useProfile} from '../store/UserStore';
@@ -65,17 +66,24 @@ const Activity = (props: Props) => {
         }}></View>
 
       <Text>All past activites</Text>
-      {activity.logs[activityId]?.map((a) => (
-        <View style={{backgroundColor: '#afafaf', margin: 20, padding: 10}}>
-          <Text>
-            done on{' '}
-            {new Date(
-              a.sk.replace('activity_', '').replace(activityId + '_', ''),
-            ).toLocaleString()}
-          </Text>
-          <Text>for --- {a.duration} mins</Text>
-        </View>
-      ))}
+      <FlatList
+        keyExtractor={(item) => item.sk}
+        data={activity.logs[activityId] || {}}
+        renderItem={({item: a}) => (
+          <View
+            key={a.sk}
+            style={{backgroundColor: '#afafaf', margin: 20, padding: 10}}>
+            <Text>
+              done{' '}
+              {ago(
+                new Date(
+                  a.sk.replace('activity_', '').replace(activityId + '_', ''),
+                ),
+              )}
+            </Text>
+            <Text>for --- {a.duration} mins</Text>
+          </View>
+        )}></FlatList>
     </View>
   );
 };

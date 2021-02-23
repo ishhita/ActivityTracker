@@ -6,13 +6,16 @@ import {StackParams} from '../index';
 import defaultActivities from '../utils/default-activity-list';
 import {useProfile} from '../store/UserStore';
 import {User} from '../../types/models';
+import {withOAuth} from 'aws-amplify-react-native';
 
 type Props = {
   email: string;
   navigation: StackNavigationProp<StackParams, 'Home'>;
 };
 
-export default function Home(props: Props) {
+type ExtractProps<T> = T extends React.ComponentClass<infer T, any> ? T : never;
+type AuthProps = ExtractProps<Parameters<typeof withOAuth>[0]>;
+export default function Home(props: Props & AuthProps) {
   const [message, setMessage] = useState('');
   const profile = useProfile();
 
@@ -34,7 +37,15 @@ export default function Home(props: Props) {
   };
 
   useEffect(() => {
-    if (!profile.pk) registerNewUser();
+    const bootstrap = async () => {
+      const user = await profile.getUser(props.email);
+      console.log({user});
+      if (!('pk' in user) || !user.pk) {
+        console.log({user});
+        registerNewUser();
+      }
+    };
+    bootstrap();
   }, []);
 
   return (
@@ -48,6 +59,7 @@ export default function Home(props: Props) {
           height: StyleSheet.hairlineWidth,
           backgroundColor: 'brown',
         }}></View>
+      <Button title="LOGOUT" onPress={props.signOut} />
       <Text>Pick a new activity</Text>
       <View
         style={{
