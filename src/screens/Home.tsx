@@ -13,9 +13,7 @@ type Props = {
   navigation: StackNavigationProp<StackParams, 'Home'>;
 };
 
-type ExtractProps<T> = T extends React.ComponentClass<infer T, any> ? T : never;
-type AuthProps = ExtractProps<Parameters<typeof withOAuth>[0]>;
-export default function Home(props: Props & AuthProps) {
+export default function Home(props: Props) {
   const [message, setMessage] = useState('');
   const profile = useProfile();
 
@@ -59,7 +57,7 @@ export default function Home(props: Props & AuthProps) {
           height: StyleSheet.hairlineWidth,
           backgroundColor: 'brown',
         }}></View>
-      <Button title="LOGOUT" onPress={props.signOut} />
+
       <Text>Pick a new activity</Text>
       <View
         style={{
