@@ -4,7 +4,7 @@ import {StackNavigationProp} from '@react-navigation/stack';
 import {RouteProp} from '@react-navigation/native';
 
 import {StackParams} from '..';
-import {useProfile} from '../store/userStore';
+import {useProfile} from '../store/UserStore';
 import {useActivityLogs} from '../store/ActivityLogStore';
 
 type Props = {
@@ -56,6 +56,26 @@ const Activity = (props: Props) => {
       <Button
         title="go back to home"
         onPress={props.navigation.goBack}></Button>
+
+      <View
+        style={{
+          height: StyleSheet.hairlineWidth,
+          margin: 20,
+          backgroundColor: 'black',
+        }}></View>
+
+      <Text>All past activites</Text>
+      {activity.logs[activityId]?.map((a) => (
+        <View style={{backgroundColor: '#afafaf', margin: 20, padding: 10}}>
+          <Text>
+            done on{' '}
+            {new Date(
+              a.sk.replace('activity_', '').replace(activityId + '_', ''),
+            ).toLocaleString()}
+          </Text>
+          <Text>for --- {a.duration} mins</Text>
+        </View>
+      ))}
     </View>
   );
 };

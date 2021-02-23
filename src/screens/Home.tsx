@@ -4,7 +4,7 @@ import {StackNavigationProp} from '@react-navigation/stack';
 
 import {StackParams} from '../index';
 import defaultActivities from '../utils/default-activity-list';
-import {useProfile} from '../store/userStore';
+import {useProfile} from '../store/UserStore';
 import {User} from '../../types/models';
 
 type Props = {
