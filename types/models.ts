@@ -21,3 +21,11 @@ export interface ActivityLogRequest {
   pk: string;
   sk: string;
 }
+
+export interface ActivityLogResponse {
+  data: {
+    Items: ActivityEvent[];
+    Count: number;
+    ScannedCount: number;
+  };
+}

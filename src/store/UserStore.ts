@@ -1,6 +1,6 @@
 import create from 'zustand';
 import {User} from '../../types/models';
-import {createUser, getUser} from '../api/API';
+import {createUpdateUser, getUser} from '../api/API';
 
 const initalState: User = {
   pk: '',
@@ -28,7 +28,7 @@ export const useProfile = create<UserState>((set, get) => ({
   },
 
   async setUser(user) {
-    await createUser(user);
+    await createUpdateUser(user);
     set(user);
   },
 
@@ -40,7 +40,7 @@ export const useProfile = create<UserState>((set, get) => ({
       proDate: get().proDate,
     };
     console.log(newUser);
-    await createUser(newUser);
+    await createUpdateUser(newUser);
 
     set((state) => ({
       ...state,

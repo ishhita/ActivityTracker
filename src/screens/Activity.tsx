@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {Button, FlatList, StyleSheet, Text, View} from 'react-native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RouteProp} from '@react-navigation/native';
@@ -18,7 +18,7 @@ const Activity = (props: Props) => {
   const activityName = props.route.params.name;
   const user = useProfile();
 
-  const [date, setDate] = useState('');
+  const [date, setDate] = useState('2021-02');
 
   const isFavAlready = user.activities[activityId];
   const activity = useActivityLogs();
@@ -34,86 +34,83 @@ const Activity = (props: Props) => {
   };
 
   const getFromServer = () => {
-    activity.getActivityLog()
-  }
+    activity.getActivityLog(user.pk, `${activityId}_${date}`, activityId);
+  };
 
   return (
-    <ScrollView>
-      <View>
-        <Text>this is your activity page</Text>
-        <Text>id: {activityId}</Text>
-        <Text>name: {activityName}</Text>
-        {!isFavAlready && (
-          <Button
-            onPress={() => user.markActivityFav(activityId)}
-            title="mark fav and start tracking"></Button>
-        )}
-        <View
-          style={{
-            height: StyleSheet.hairlineWidth,
-            margin: 20,
-            backgroundColor: 'black',
-          }}></View>
-
-        {isFavAlready && <Button title="I did this - yo!" onPress={log} />}
-        <View
-          style={{
-            height: StyleSheet.hairlineWidth,
-            margin: 20,
-            backgroundColor: 'black',
-          }}></View>
+    <View>
+      <Text>this is your activity page</Text>
+      <Text>id: {activityId}</Text>
+      <Text>name: {activityName}</Text>
+      {!isFavAlready && (
         <Button
-          title="go back to home"
-          onPress={props.navigation.goBack}></Button>
+          onPress={() => user.markActivityFav(activityId)}
+          title="mark fav and start tracking"></Button>
+      )}
+      <View
+        style={{
+          height: StyleSheet.hairlineWidth,
+          margin: 20,
+          backgroundColor: 'black',
+        }}></View>
 
-        <View
-          style={{
-            height: StyleSheet.hairlineWidth,
-            margin: 20,
-            backgroundColor: 'black',
-          }}></View>
+      {isFavAlready && <Button title="I did this - yo!" onPress={log} />}
+      <View
+        style={{
+          height: StyleSheet.hairlineWidth,
+          margin: 20,
+          backgroundColor: 'black',
+        }}></View>
+      <Button
+        title="go back to home"
+        onPress={props.navigation.goBack}></Button>
 
-        <View
-          style={{
-            height: StyleSheet.hairlineWidth,
-            margin: 20,
-            backgroundColor: 'black',
-          }}></View>
+      <View
+        style={{
+          height: StyleSheet.hairlineWidth,
+          margin: 20,
+          backgroundColor: 'black',
+        }}></View>
 
+      <View
+        style={{
+          height: StyleSheet.hairlineWidth,
+          margin: 20,
+          backgroundColor: 'black',
+        }}></View>
+      <Button onPress={getFromServer} title="get from server" />
+      <View
+        style={{
+          height: StyleSheet.hairlineWidth,
+          margin: 20,
+          backgroundColor: 'black',
+        }}></View>
 
-        <View
-          style={{
-            height: StyleSheet.hairlineWidth,
-            margin: 20,
-            backgroundColor: 'black',
-          }}></View>
-
-        <Text>All past activites</Text>
-        <FlatList
-          keyExtractor={(item) => item}
-          data={Object.keys(activity.logs[activityId] || {})}
-          renderItem={({item}) => {
-            const eachActivity = activity.logs[activityId][item];
-            return (
-              <View
-                key={eachActivity.sk}
-                style={{backgroundColor: '#afafaf', margin: 20, padding: 10}}>
-                <Text>
-                  done{' '}
-                  {ago(
-                    new Date(
-                      eachActivity.sk
-                        .replace('activity_', '')
-                        .replace(activityId + '_', ''),
-                    ),
-                  )}
-                </Text>
-                <Text>for --- {eachActivity.duration} mins</Text>
-              </View>
-            );
-          }}></FlatList>
-      </View>
-    </ScrollView>
+      <Text>All past activites</Text>
+      <FlatList
+        keyExtractor={(item) => item}
+        data={Object.keys(activity.logs[activityId] || {})}
+        renderItem={({item}) => {
+          const eachActivity = activity.logs[activityId][item];
+          return (
+            <View
+              key={eachActivity.sk}
+              style={{backgroundColor: '#afafaf', margin: 20, padding: 10}}>
+              <Text>
+                done{' '}
+                {ago(
+                  new Date(
+                    eachActivity.sk
+                      .replace('activity_', '')
+                      .replace(activityId + '_', ''),
+                  ),
+                )}
+              </Text>
+              <Text>for --- {eachActivity.duration} mins</Text>
+            </View>
+          );
+        }}></FlatList>
+    </View>
   );
 };
 

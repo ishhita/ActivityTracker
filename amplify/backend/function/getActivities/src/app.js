@@ -41,8 +41,8 @@ app.get('/activities/:email/:activity', function (req, res) {
     TableName: tableName,
     KeyConditionExpression: 'pk = :pkVal and begins_with (sk, :skVal)',
     ExpressionAttributeValues: {
-      ':pk': req.params.email,
-      ':sk': req.params.activity,
+      ':pkVal': req.params.email,
+      ':skVal': req.params.activity,
     },
   };
   dynamodb.query(params, (err, data) => {
