@@ -14,5 +14,10 @@ export interface ActivityEvent {
   pk: string;
   // TODO: TS template string check here
   sk: string;
-  duration: number
+  duration: number;
+}
+
+export interface ActivityLogRequest {
+  pk: string;
+  sk: string;
 }
