@@ -2,11 +2,11 @@ import React, {useEffect, useState} from 'react';
 import {Button, StyleSheet, Text, View} from 'react-native';
 import {StackNavigationProp} from '@react-navigation/stack';
 
-import api from '../api/ApiCaller';
 import {StackParams} from '../index';
 import defaultActivities from '../utils/default-activity-list';
-import {createUser, getUser} from '../api/Api';
-import {useAppState} from '../state/context';
+import {useProfile} from '../store/UserStore';
+import {User} from '../../types/models';
+import {withOAuth} from 'aws-amplify-react-native';
 
 type Props = {
   email: string;
@@ -14,36 +14,38 @@ type Props = {
 };
 
 export default function Home(props: Props) {
-  const {dispatch} = useAppState();
   const [message, setMessage] = useState('');
+  const profile = useProfile();
 
-  const fetchUser = async () => {
+  const registerNewUser = async () => {
     try {
-      const user = await getUser(props.email);
-
-      if (Object.keys(user).length !== 0) {
-        dispatch({type: 'SET_USER', payload: user});
-        return;
-      }
-
       setMessage('First time user, creating a profile...');
-      const userPayload = {
+      const userPayload: User = {
         pk: props.email,
         sk: 'profile',
         proDate: 0,
-        activities: [],
-        friends: {},
+        activities: {},
       };
-      await createUser(userPayload);
+
+      await profile.setUser(userPayload);
       setMessage('Profile created!');
-      dispatch({type: 'SET_USER', payload: userPayload});
     } catch (error) {
       console.log(JSON.stringify(error));
     }
   };
+
   useEffect(() => {
-    fetchUser();
+    const bootstrap = async () => {
+      const user = await profile.getUser(props.email);
+      console.log({user});
+      if (!('pk' in user) || !user.pk) {
+        console.log({user});
+        registerNewUser();
+      }
+    };
+    bootstrap();
   }, []);
+
   return (
     <View>
       <Text>Hello, {props.email}</Text>
@@ -55,6 +57,7 @@ export default function Home(props: Props) {
           height: StyleSheet.hairlineWidth,
           backgroundColor: 'brown',
         }}></View>
+
       <Text>Pick a new activity</Text>
       <View
         style={{

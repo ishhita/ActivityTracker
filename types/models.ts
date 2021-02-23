@@ -6,11 +6,7 @@ export interface Activity {
 export interface User {
   pk: string;
   sk: string;
-  activities: {id: string; name: string}[];
-  friends: {
-    // each activity with array of user emails
-    [activityId: string]: string[]
-  }
+  activities: Record<string, string[]>;
   proDate: number;
 }
 
@@ -18,5 +14,10 @@ export interface ActivityEvent {
   pk: string;
   // TODO: TS template string check here
   sk: string;
-  duration: number
+  duration: number;
+}
+
+export interface ActivityLogRequest {
+  pk: string;
+  sk: string;
 }
