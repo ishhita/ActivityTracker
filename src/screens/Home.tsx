@@ -29,17 +29,14 @@ export default function Home(props: Props) {
 
       await profile.setUser(userPayload);
       setMessage('Profile created!');
-    } catch (error) {
-      console.log(JSON.stringify(error));
-    }
+    } catch (error) {}
   };
 
   useEffect(() => {
     const bootstrap = async () => {
       const user = await profile.getUser(props.email);
-      console.log({user});
+
       if (!('pk' in user) || !user.pk) {
-        console.log({user});
         registerNewUser();
       }
     };
@@ -51,6 +48,15 @@ export default function Home(props: Props) {
       <Text>Hello, {props.email}</Text>
       <Text style={{color: 'blue', fontSize: 30, textAlign: 'center'}}>
         {message}
+      </Text>
+
+      <Text style={{fontWeight: '600', color: 'green'}}>
+        my current tracking activities
+      </Text>
+      <Text style={{fontWeight: '900', color: 'violet'}}>
+        {Object.keys(profile.activities)
+          .map((s) => s.substring(0, s.indexOf('-')))
+          .join('       ')}
       </Text>
       <View
         style={{
