@@ -1,4 +1,4 @@
-import React, {useEffect, useReducer} from 'react';
+import React from 'react';
 import {Linking} from 'react-native';
 import Amplify from 'aws-amplify';
 import InAppBrowser from 'react-native-inappbrowser-reborn';
@@ -9,8 +9,6 @@ import {createStackNavigator} from '@react-navigation/stack';
 import Home from './screens/Home';
 import Splash from './screens/Splash';
 import Activity from './screens/Activity';
-import {initialState, reducer} from './state/reducer';
-import StateProvider, {useAppState} from './state/context';
 
 async function urlOpener(url: string, redirectUrl: string) {
   await InAppBrowser.isAvailable();
@@ -46,22 +44,20 @@ const App = (props: any) => {
   const {oAuthUser} = props;
   const email = oAuthUser?.attributes?.email;
   return (
-    <StateProvider>
-      <NavigationContainer>
-        <Stack.Navigator>
-          {email ? (
-            <>
-              <Stack.Screen name="Home">
-                {(props) => <Home {...props} email={email} />}
-              </Stack.Screen>
-              <Stack.Screen name="Activity" component={Activity}></Stack.Screen>
-            </>
-          ) : (
-            <Stack.Screen name="Splash" component={Splash} />
-          )}
-        </Stack.Navigator>
-      </NavigationContainer>
-    </StateProvider>
+    <NavigationContainer>
+      <Stack.Navigator>
+        {email ? (
+          <>
+            <Stack.Screen name="Home">
+              {(props) => <Home {...props} email={email} />}
+            </Stack.Screen>
+            <Stack.Screen name="Activity" component={Activity}></Stack.Screen>
+          </>
+        ) : (
+          <Stack.Screen name="Splash" component={Splash} />
+        )}
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 };
 

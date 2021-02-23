@@ -6,11 +6,7 @@ export interface Activity {
 export interface User {
   pk: string;
   sk: string;
-  activities: {id: string; name: string}[];
-  friends: {
-    // each activity with array of user emails
-    [activityId: string]: string[]
-  }
+  activities: Record<string, string[]>;
   proDate: number;
 }
 
