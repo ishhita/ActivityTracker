@@ -18,15 +18,11 @@
       "function": {
         "getActivities": {
           "deploymentBucketName": "amplify-activitytracker-dev-234703-deployment",
-          "s3Key": "amplify-builds/getActivities-6c44365177364e513265-build.zip"
+          "s3Key": "amplify-builds/getActivities-37365847436561705178-build.zip"
         },
         "logActivity": {
           "deploymentBucketName": "amplify-activitytracker-dev-234703-deployment",
           "s3Key": "amplify-builds/logActivity-744f6159787451377a74-build.zip"
-        },
-        "registerReferral": {
-          "deploymentBucketName": "amplify-activitytracker-dev-234703-deployment",
-          "s3Key": "amplify-builds/registerReferral-515a336c467633787162-build.zip"
         },
         "getUserProfile": {
           "deploymentBucketName": "amplify-activitytracker-dev-234703-deployment",

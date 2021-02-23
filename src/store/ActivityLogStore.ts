@@ -27,8 +27,7 @@ export const useActivityLogs = create<ActivityState>((set) => ({
 
   async getActivityLog(pk, sk, activityId) {
     const items = await fetchActivityLog({pk, sk});
-    console.log(items);
-    const map = items.Items.reduce((result, current) => {
+    const map = items.data.Items.reduce((result, current) => {
       return {
         ...result,
         [current.sk]: current,

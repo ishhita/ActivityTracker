@@ -62,21 +62,6 @@
           ]
         }
       ]
-    },
-    "registerReferral": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda",
-      "dependsOn": [
-        {
-          "category": "storage",
-          "resourceName": "activityTable",
-          "attributes": [
-            "Name",
-            "Arn"
-          ]
-        }
-      ]
     }
   },
   "api": {
@@ -95,14 +80,6 @@
         {
           "category": "function",
           "resourceName": "getActivities",
-          "attributes": [
-            "Name",
-            "Arn"
-          ]
-        },
-        {
-          "category": "function",
-          "resourceName": "registerReferral",
           "attributes": [
             "Name",
             "Arn"

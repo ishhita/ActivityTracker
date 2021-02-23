@@ -27,18 +27,6 @@
             "policyResourceName": "/activities/*/*"
         },
         {
-            "name": "/referral",
-            "lambdaFunction": "registerReferral",
-            "privacy": {
-                "private": true,
-                "auth": [
-                    "/PUT",
-                    "/PATCH"
-                ]
-            },
-            "policyResourceName": "/referral"
-        },
-        {
             "name": "/log",
             "lambdaFunction": "logActivity",
             "privacy": {
@@ -59,9 +47,6 @@
         },
         {
             "lambdaFunction": "getActivities"
-        },
-        {
-            "lambdaFunction": "registerReferral"
         },
         {
             "lambdaFunction": "logActivity"
@@ -92,14 +77,6 @@
         },
         {
             "category": "function",
-            "resourceName": "registerReferral",
-            "attributes": [
-                "Name",
-                "Arn"
-            ]
-        },
-        {
-            "category": "function",
             "resourceName": "logActivity",
             "attributes": [
                 "Name",
@@ -107,5 +84,5 @@
             ]
         }
     ],
-    "uuid": "517c45f0"
+    "uuid": "a4ab1800"
 }
