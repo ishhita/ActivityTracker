@@ -8,6 +8,7 @@ export interface User {
   sk: string;
   activities: Record<string, string[]>;
   proDate: number;
+  deviceIds: string[];
 }
 
 export interface ActivityEvent {

@@ -62,6 +62,12 @@
           ]
         }
       ]
+    },
+    "notifyUsers": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": []
     }
   },
   "api": {
@@ -92,7 +98,29 @@
             "Name",
             "Arn"
           ]
+        },
+        {
+          "category": "function",
+          "resourceName": "notifyUsers",
+          "attributes": [
+            "Name",
+            "Arn"
+          ]
         }
+      ]
+    }
+  },
+  "analytics": {
+    "activitytracker": {
+      "service": "Pinpoint",
+      "providerPlugin": "awscloudformation"
+    }
+  },
+  "notifications": {
+    "activitytracker": {
+      "service": "Pinpoint",
+      "channels": [
+        "FCM"
       ]
     }
   }

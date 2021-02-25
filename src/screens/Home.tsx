@@ -7,6 +7,8 @@ import defaultActivities from '../utils/default-activity-list';
 import {useProfile} from '../store/UserStore';
 import {User} from '../../types/models';
 import {withOAuth} from 'aws-amplify-react-native';
+import DeviceInfo from 'react-native-device-info';
+import { Analytics } from 'aws-amplify';
 
 type Props = {
   email: string;
@@ -17,6 +19,26 @@ export default function Home(props: Props) {
   const [message, setMessage] = useState('');
   const profile = useProfile();
 
+  useEffect(() => {
+    const bootstrap = async () => {
+      const user = await profile.getUser(props.email);
+      const deviceId = DeviceInfo.getUniqueId();
+
+      if (!('pk' in user) || !user.pk) {
+        registerNewUser();
+      } else {
+        if (!user.deviceIds.includes(deviceId)) {
+          Analytics.updateEndpoint({address: DeviceInfo.getUniqueId()});
+          profile.setUser({
+            ...user,
+            deviceIds: [...user.deviceIds, deviceId],
+          });
+        }
+      }
+    };
+    bootstrap();
+  }, []);
+
   const registerNewUser = async () => {
     try {
       setMessage('First time user, creating a profile...');
@@ -25,23 +47,13 @@ export default function Home(props: Props) {
         sk: 'profile',
         proDate: 0,
         activities: {},
+        deviceIds: [DeviceInfo.getUniqueId()],
       };
 
       await profile.setUser(userPayload);
       setMessage('Profile created!');
     } catch (error) {}
   };
-
-  useEffect(() => {
-    const bootstrap = async () => {
-      const user = await profile.getUser(props.email);
-
-      if (!('pk' in user) || !user.pk) {
-        registerNewUser();
-      }
-    };
-    bootstrap();
-  }, []);
 
   return (
     <View>

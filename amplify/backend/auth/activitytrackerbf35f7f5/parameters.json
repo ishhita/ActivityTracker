@@ -1,6 +1,6 @@
 {
     "identityPoolName": "activitytrackerbf35f7f5_identitypool_bf35f7f5",
-    "allowUnauthenticatedIdentities": false,
+    "allowUnauthenticatedIdentities": true,
     "resourceNameTruncated": "activibf35f7f5",
     "userPoolName": "activitytrackerbf35f7f5_userpool_bf35f7f5",
     "autoVerifiedAttributes": [
