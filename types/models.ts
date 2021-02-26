@@ -30,3 +30,9 @@ export interface ActivityLogResponse {
     ScannedCount: number;
   };
 }
+
+export interface NotifyRequest {
+  message: string;
+  title: string;
+  users: string[];
+}

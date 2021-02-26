@@ -1,4 +1,13 @@
 {
-  "permissions": {},
+  "permissions": {
+    "analytics": {
+      "activitytracker": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ]
+    }
+  },
   "lambdaLayers": []
 }

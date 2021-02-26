@@ -8,7 +8,8 @@ import {useProfile} from '../store/UserStore';
 import {User} from '../../types/models';
 import {withOAuth} from 'aws-amplify-react-native';
 import DeviceInfo from 'react-native-device-info';
-import { Analytics } from 'aws-amplify';
+import {Analytics} from 'aws-amplify';
+import {sendPush} from '../api/API';
 
 type Props = {
   email: string;
@@ -22,18 +23,25 @@ export default function Home(props: Props) {
   useEffect(() => {
     const bootstrap = async () => {
       const user = await profile.getUser(props.email);
-      const deviceId = DeviceInfo.getUniqueId();
-
+      Analytics.updateEndpoint({
+        userId: props.email,
+        address: DeviceInfo.getUniqueId(),
+      })
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      // profile.setUser({
+      //   ...user,
+      //   deviceIds: [...(user.deviceIds || []), deviceId],
+      // });
       if (!('pk' in user) || !user.pk) {
         registerNewUser();
       } else {
-        if (!user.deviceIds.includes(deviceId)) {
-          Analytics.updateEndpoint({address: DeviceInfo.getUniqueId()});
-          profile.setUser({
-            ...user,
-            deviceIds: [...user.deviceIds, deviceId],
-          });
-        }
+        // if (user && user.deviceIds && !user.deviceIds.includes(deviceId)) {
+        // }
       }
     };
     bootstrap();
@@ -75,7 +83,21 @@ export default function Home(props: Props) {
           height: StyleSheet.hairlineWidth,
           backgroundColor: 'brown',
         }}></View>
-
+      <Button
+        title="Send push notification"
+        onPress={() => {
+          sendPush({
+            message: 'send via app ' + Math.random() * 100,
+            title: 'yo push',
+            users: [props.email],
+          })
+            .then((res) => {
+              console.log(res);
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        }}></Button>
       <Text>Pick a new activity</Text>
       <View
         style={{

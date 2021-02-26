@@ -7,6 +7,8 @@ See the License for the specific language governing permissions and limitations 
 */
 
 /* Amplify Params - DO NOT EDIT
+	ANALYTICS_ACTIVITYTRACKER_ID
+	ANALYTICS_ACTIVITYTRACKER_REGION
 	ENV
 	REGION
 Amplify Params - DO NOT EDIT */
@@ -29,37 +31,55 @@ app.use(function (req, res, next) {
 
 app.post('/notify', function (req, res) {
   var pinpoint = new AWS.Pinpoint();
-  const {message, title, endpoints} = req.body;
-  const addresses = endpoints.reduce((map, curr) => {
+  const {message, title, users} = req.body;
+  const hash = users.reduce((map, curr) => {
     map[curr] = {
-      ChannelType: 'PUSH',
+      BodyOverride: 'BodyOverride - dev',
+      TitleOverride: ' Dev Title',
     };
     return map;
   }, {});
+  console.log(process.env.PINPOINT_ID, 'pinpoint id');
+
   var params = {
     ApplicationId: process.env.PINPOINT_ID,
-    MessageRequest: {
-      Addresses: addresses,
+    SendUsersMessageRequest: {
       MessageConfiguration: {
+        DefaultMessage: {
+          Body: 'DefaultMessage - dev',
+        },
+        DefaultPushNotificationMessage: {
+          Action: 'OPEN_APP',
+          Body: 'DefaultPushNotificationMessage - dev',
+          SilentPush: false,
+          Title: 'Title - Dev',
+        },
         GCMMessage: {
           Action: 'OPEN_APP',
-          Body: message,
-          Title: title,
+          Body: 'GCMMessage - dev',
+          SilentPush: false,
+          Title: ' Dev',
         },
       },
+      Users: hash,
     },
   };
-
-  // Try to send the message.
-  pinpoint.sendMessages(params, function (err, data) {
+  pinpoint.sendUsersMessages(params, function (err, data) {
     if (err) {
       res.statusCode = 500;
       console.log(err);
       res.json({error: err, url: req.url, body: req.body});
     } else {
-      res.json({success: 'post call succeed!', url: req.url, body: req.body});
+      res.json({
+        success: 'post call succeed!',
+        url: req.url,
+        body: req.body,
+        data: JSON.stringify(data),
+      });
     }
   });
+
+  // Try to send the message.
 });
 
 app.listen(3000, function () {
