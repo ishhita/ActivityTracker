@@ -1,11 +1,13 @@
 {
   "permissions": {
+    "auth": {
+      "activitytrackerbf35f7f5": [
+        "create"
+      ]
+    },
     "analytics": {
-      "activitytracker": [
-        "create",
-        "read",
-        "update",
-        "delete"
+      "hobbittracker": [
+        "create"
       ]
     }
   },

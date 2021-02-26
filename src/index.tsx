@@ -51,6 +51,9 @@ Amplify.configure({
     ...config.oauth,
     urlOpener,
   },
+  PushNotification: {
+    requestIOSPermissions: false,
+  },
 });
 
 export type StackParams = {

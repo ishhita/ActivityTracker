@@ -69,8 +69,15 @@
       "service": "Lambda",
       "dependsOn": [
         {
+          "category": "auth",
+          "resourceName": "activitytrackerbf35f7f5",
+          "attributes": [
+            "UserPoolId"
+          ]
+        },
+        {
           "category": "analytics",
-          "resourceName": "activitytracker",
+          "resourceName": "hobbittracker",
           "attributes": [
             "Id",
             "Region"
@@ -119,18 +126,18 @@
       ]
     }
   },
-  "analytics": {
-    "activitytracker": {
-      "service": "Pinpoint",
-      "providerPlugin": "awscloudformation"
-    }
-  },
   "notifications": {
-    "activitytracker": {
+    "hobbittracker": {
       "service": "Pinpoint",
       "channels": [
         "FCM"
       ]
+    }
+  },
+  "analytics": {
+    "hobbittracker": {
+      "service": "Pinpoint",
+      "providerPlugin": "awscloudformation"
     }
   }
 }

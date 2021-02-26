@@ -21,18 +21,19 @@ export default function Home(props: Props) {
   const profile = useProfile();
 
   useEffect(() => {
+    Analytics.updateEndpoint({
+      userId: props.email,
+    })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
     const bootstrap = async () => {
       const user = await profile.getUser(props.email);
-      Analytics.updateEndpoint({
-        userId: props.email,
-        address: DeviceInfo.getUniqueId(),
-      })
-        .then((res) => {
-          console.log(res);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+
       // profile.setUser({
       //   ...user,
       //   deviceIds: [...(user.deviceIds || []), deviceId],

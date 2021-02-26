@@ -16,13 +16,17 @@
     "s3Key": {
       "Type": "String"
     },
-    "analyticsactivitytrackerId": {
+    "authactivitytrackerbf35f7f5UserPoolId": {
       "Type": "String",
-      "Default": "analyticsactivitytrackerId"
+      "Default": "authactivitytrackerbf35f7f5UserPoolId"
     },
-    "analyticsactivitytrackerRegion": {
+    "analyticshobbittrackerId": {
       "Type": "String",
-      "Default": "analyticsactivitytrackerRegion"
+      "Default": "analyticshobbittrackerId"
+    },
+    "analyticshobbittrackerRegion": {
+      "Type": "String",
+      "Default": "analyticshobbittrackerRegion"
     }
   },
   "Conditions": {
@@ -78,11 +82,14 @@
             "REGION": {
               "Ref": "AWS::Region"
             },
-            "ANALYTICS_ACTIVITYTRACKER_ID": {
-              "Ref": "analyticsactivitytrackerId"
+            "AUTH_ACTIVITYTRACKERBF35F7F5_USERPOOLID": {
+              "Ref": "authactivitytrackerbf35f7f5UserPoolId"
             },
-            "ANALYTICS_ACTIVITYTRACKER_REGION": {
-              "Ref": "analyticsactivitytrackerRegion"
+            "ANALYTICS_HOBBITTRACKER_ID": {
+              "Ref": "analyticshobbittrackerId"
+            },
+            "ANALYTICS_HOBBITTRACKER_REGION": {
+              "Ref": "analyticshobbittrackerRegion"
             }
           }
         },
@@ -197,13 +204,80 @@
             {
               "Effect": "Allow",
               "Action": [
+                "cognito-idp:ConfirmSignUp",
+                "cognito-idp:AdminCreateUser",
+                "cognito-idp:CreateUserImportJob",
+                "cognito-idp:AdminSetUserSettings",
+                "cognito-idp:AdminLinkProviderForUser",
+                "cognito-idp:CreateIdentityProvider",
+                "cognito-idp:AdminConfirmSignUp",
+                "cognito-idp:AdminDisableUser",
+                "cognito-idp:AdminRemoveUserFromGroup",
+                "cognito-idp:SetUserMFAPreference",
+                "cognito-idp:SetUICustomization",
+                "cognito-idp:SignUp",
+                "cognito-idp:VerifyUserAttribute",
+                "cognito-idp:SetRiskConfiguration",
+                "cognito-idp:StartUserImportJob",
+                "cognito-idp:AdminSetUserPassword",
+                "cognito-idp:AssociateSoftwareToken",
+                "cognito-idp:CreateResourceServer",
+                "cognito-idp:RespondToAuthChallenge",
+                "cognito-idp:CreateUserPoolClient",
+                "cognito-idp:AdminUserGlobalSignOut",
+                "cognito-idp:GlobalSignOut",
+                "cognito-idp:AddCustomAttributes",
+                "cognito-idp:CreateGroup",
+                "cognito-idp:CreateUserPool",
+                "cognito-idp:AdminForgetDevice",
+                "cognito-idp:AdminAddUserToGroup",
+                "cognito-idp:AdminRespondToAuthChallenge",
+                "cognito-idp:ForgetDevice",
+                "cognito-idp:CreateUserPoolDomain",
+                "cognito-idp:AdminEnableUser",
+                "cognito-idp:AdminUpdateDeviceStatus",
+                "cognito-idp:StopUserImportJob",
+                "cognito-idp:InitiateAuth",
+                "cognito-idp:AdminInitiateAuth",
+                "cognito-idp:AdminSetUserMFAPreference",
+                "cognito-idp:ConfirmForgotPassword",
+                "cognito-idp:SetUserSettings",
+                "cognito-idp:VerifySoftwareToken",
+                "cognito-idp:AdminDisableProviderForUser",
+                "cognito-idp:SetUserPoolMfaConfig",
+                "cognito-idp:ChangePassword",
+                "cognito-idp:ConfirmDevice",
+                "cognito-idp:AdminResetUserPassword",
+                "cognito-idp:ResendConfirmationCode"
+              ],
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:cognito-idp:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":userpool/",
+                      {
+                        "Ref": "authactivitytrackerbf35f7f5UserPoolId"
+                      }
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
                 "mobiletargeting:Put*",
                 "mobiletargeting:Create*",
-                "mobiletargeting:Send*",
-                "mobiletargeting:Get*",
-                "mobiletargeting:List*",
-                "mobiletargeting:Update*",
-                "mobiletargeting:Delete*"
+                "mobiletargeting:Send*"
               ],
               "Resource": [
                 {
@@ -212,7 +286,7 @@
                     [
                       "arn:aws:mobiletargeting:",
                       {
-                        "Ref": "analyticsactivitytrackerRegion"
+                        "Ref": "analyticshobbittrackerRegion"
                       },
                       ":",
                       {
@@ -220,7 +294,7 @@
                       },
                       ":apps/",
                       {
-                        "Ref": "analyticsactivitytrackerId"
+                        "Ref": "analyticshobbittrackerId"
                       }
                     ]
                   ]
@@ -231,7 +305,7 @@
                     [
                       "arn:aws:mobiletargeting:",
                       {
-                        "Ref": "analyticsactivitytrackerRegion"
+                        "Ref": "analyticshobbittrackerRegion"
                       },
                       ":",
                       {
@@ -239,7 +313,7 @@
                       },
                       ":apps/",
                       {
-                        "Ref": "analyticsactivitytrackerId"
+                        "Ref": "analyticshobbittrackerId"
                       },
                       "/*"
                     ]
