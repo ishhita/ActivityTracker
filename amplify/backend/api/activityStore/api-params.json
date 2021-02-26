@@ -37,6 +37,17 @@
                 ]
             },
             "policyResourceName": "/log"
+        },
+        {
+            "name": "/notify",
+            "lambdaFunction": "notifyUsers",
+            "privacy": {
+                "private": true,
+                "auth": [
+                    "/POST"
+                ]
+            },
+            "policyResourceName": "/notify"
         }
     ],
     "resourceName": "activityStore",
@@ -50,6 +61,9 @@
         },
         {
             "lambdaFunction": "logActivity"
+        },
+        {
+            "lambdaFunction": "notifyUsers"
         }
     ],
     "privacy": {
@@ -82,7 +96,15 @@
                 "Name",
                 "Arn"
             ]
+        },
+        {
+            "category": "function",
+            "resourceName": "notifyUsers",
+            "attributes": [
+                "Name",
+                "Arn"
+            ]
         }
     ],
-    "uuid": "a4ab1800"
+    "uuid": "3b3c5fa4"
 }

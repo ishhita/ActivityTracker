@@ -7,6 +7,9 @@ import defaultActivities from '../utils/default-activity-list';
 import {useProfile} from '../store/UserStore';
 import {User} from '../../types/models';
 import {withOAuth} from 'aws-amplify-react-native';
+import DeviceInfo from 'react-native-device-info';
+import {Analytics} from 'aws-amplify';
+import {sendPush} from '../api/API';
 
 type Props = {
   email: string;
@@ -17,6 +20,34 @@ export default function Home(props: Props) {
   const [message, setMessage] = useState('');
   const profile = useProfile();
 
+  useEffect(() => {
+    Analytics.updateEndpoint({
+      userId: props.email,
+    })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    const bootstrap = async () => {
+      const user = await profile.getUser(props.email);
+
+      // profile.setUser({
+      //   ...user,
+      //   deviceIds: [...(user.deviceIds || []), deviceId],
+      // });
+      if (!('pk' in user) || !user.pk) {
+        registerNewUser();
+      } else {
+        // if (user && user.deviceIds && !user.deviceIds.includes(deviceId)) {
+        // }
+      }
+    };
+    bootstrap();
+  }, []);
+
   const registerNewUser = async () => {
     try {
       setMessage('First time user, creating a profile...');
@@ -25,23 +56,13 @@ export default function Home(props: Props) {
         sk: 'profile',
         proDate: 0,
         activities: {},
+        deviceIds: [DeviceInfo.getUniqueId()],
       };
 
       await profile.setUser(userPayload);
       setMessage('Profile created!');
     } catch (error) {}
   };
-
-  useEffect(() => {
-    const bootstrap = async () => {
-      const user = await profile.getUser(props.email);
-
-      if (!('pk' in user) || !user.pk) {
-        registerNewUser();
-      }
-    };
-    bootstrap();
-  }, []);
 
   return (
     <View>
@@ -63,7 +84,21 @@ export default function Home(props: Props) {
           height: StyleSheet.hairlineWidth,
           backgroundColor: 'brown',
         }}></View>
-
+      <Button
+        title="Send push notification"
+        onPress={() => {
+          sendPush({
+            message: 'send via app ' + Math.random() * 100,
+            title: 'yo push',
+            users: [props.email],
+          })
+            .then((res) => {
+              console.log(res);
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        }}></Button>
       <Text>Pick a new activity</Text>
       <View
         style={{

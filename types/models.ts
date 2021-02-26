@@ -8,6 +8,7 @@ export interface User {
   sk: string;
   activities: Record<string, string[]>;
   proDate: number;
+  deviceIds: string[];
 }
 
 export interface ActivityEvent {
@@ -28,4 +29,10 @@ export interface ActivityLogResponse {
     Count: number;
     ScannedCount: number;
   };
+}
+
+export interface NotifyRequest {
+  message: string;
+  title: string;
+  users: string[];
 }

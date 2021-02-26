@@ -2,6 +2,7 @@ import {
   ActivityEvent,
   ActivityLogRequest,
   ActivityLogResponse,
+  NotifyRequest,
   User,
 } from '../../types/models';
 import APICaller from './ApiCaller';
@@ -20,3 +21,6 @@ export const fetchActivityLog = ({
   sk,
 }: ActivityLogRequest): Promise<ActivityLogResponse> =>
   APICaller.get(`/activities/${pk}/activity_${sk}`);
+
+export const sendPush = (event: NotifyRequest) =>
+  APICaller.post('/notify', event);

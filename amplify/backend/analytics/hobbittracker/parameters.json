@@ -1,0 +1,21 @@
+{
+    "appName": "hobbittracker",
+    "roleName": "pinpointLambdaRolebecf0325",
+    "cloudformationPolicyName": "cloudformationPolicybecf0325",
+    "cloudWatchPolicyName": "cloudWatchPolicybecf0325",
+    "pinpointPolicyName": "pinpointPolicybecf0325",
+    "authPolicyName": "pinpoint_amplify_becf0325",
+    "unauthPolicyName": "pinpoint_amplify_becf0325",
+    "authRoleName": {
+        "Ref": "AuthRoleName"
+    },
+    "unauthRoleName": {
+        "Ref": "UnauthRoleName"
+    },
+    "authRoleArn": {
+        "Fn::GetAtt": [
+            "AuthRole",
+            "Arn"
+        ]
+    }
+}
