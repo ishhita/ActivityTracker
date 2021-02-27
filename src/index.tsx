@@ -75,10 +75,10 @@ const App = (props: any) => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        {email ? (
+        {true ? (
           <>
             <Stack.Screen name="Home">
-              {(props) => <Home {...props} email={email} />}
+              {(props) => <Home {...props} email={"varsha.10july@gmail.com"} />}
             </Stack.Screen>
             <Stack.Screen name="Activity" component={Activity}></Stack.Screen>
           </>
