@@ -1,0 +1,22 @@
+{
+    "appName": "ActivityTrackeraELhs",
+    "roleName": "pinpointLambdaRole51f2c6db",
+    "cloudformationPolicyName": "cloudformationPolicy51f2c6db",
+    "cloudWatchPolicyName": "cloudWatchPolicy51f2c6db",
+    "pinpointPolicyName": "pinpointPolicy51f2c6db",
+    "authPolicyName": "pinpoint_amplify_51f2c6db",
+    "unauthPolicyName": "pinpoint_amplify_51f2c6db",
+    "authRoleName": {
+        "Ref": "AuthRoleName"
+    },
+    "unauthRoleName": {
+        "Ref": "UnauthRoleName"
+    },
+    "authRoleArn": {
+        "Fn::GetAtt": [
+            "AuthRole",
+            "Arn"
+        ]
+    },
+    "appId": "3c9c184430f44405ba864359349492de"
+}

@@ -30,13 +30,13 @@
         },
         "notifyUsers": {
           "deploymentBucketName": "amplify-activitytracker-dev-234703-deployment",
-          "s3Key": "amplify-builds/notifyUsers-5837537a664e656b3354-build.zip"
+          "s3Key": "amplify-builds/notifyUsers-63677a414e3245767452-build.zip"
         }
       },
       "notifications": {
         "Pinpoint": {
-          "Name": "hobbittracker-dev",
-          "Id": "5954f94c1884470c88bfb4a061d1baae",
+          "Name": "ActivityTrackeraELhs-dev",
+          "Id": "3c9c184430f44405ba864359349492de",
           "Region": "us-east-1"
         }
       }

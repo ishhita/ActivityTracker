@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {Linking} from 'react-native';
+import {Linking, PushNotificationIOS} from 'react-native';
 import Amplify, {Analytics} from 'aws-amplify';
 import PushNotification from '@aws-amplify/pushnotification';
 import InAppBrowser from 'react-native-inappbrowser-reborn';
@@ -13,21 +13,26 @@ import Home from './screens/Home';
 import Splash from './screens/Splash';
 import Activity from './screens/Activity';
 
-// get the notification data when notification is received
-PushNotification.onNotification((notification) => {
-  // Note that the notification object structure is different from Android and IOS
-  console.log('in app notification', notification);
-});
-
-// get the registration token
-// This will only be triggered when the token is generated or updated.
 PushNotification.onRegister((token) => {
-  console.log('in app registration', token);
+  console.log('onRegister', token);
 });
+PushNotification.onNotification((notification) => {
+  if (notification.foreground) {
+    console.log('onNotification foreground', notification);
+  } else {
+    console.log('onNotification background or closed', notification);
+  }
+  // extract the data passed in the push notification
+  // const data = JSON.parse(notification.data['pinpoint.jsonBody']);
 
-// get the notification data when notification is opened
+  // iOS only
+  // notification.finish(PushNotificationIOS.FetchResult.NoData);
+});
 PushNotification.onNotificationOpened((notification) => {
-  console.log('the notification is opened', notification);
+  console.log('onNotificationOpened', notification);
+  // extract the data passed in the push notification
+  const data = JSON.parse(notification['pinpoint.jsonBody']);
+  console.log('onNotificationOpened data', data);
 });
 
 async function urlOpener(url: string, redirectUrl: string) {

@@ -77,7 +77,7 @@
         },
         {
           "category": "analytics",
-          "resourceName": "hobbittracker",
+          "resourceName": "ActivityTrackeraELhs",
           "attributes": [
             "Id",
             "Region"
@@ -127,7 +127,7 @@
     }
   },
   "notifications": {
-    "hobbittracker": {
+    "ActivityTrackeraELhs": {
       "service": "Pinpoint",
       "channels": [
         "FCM"
@@ -135,7 +135,7 @@
     }
   },
   "analytics": {
-    "hobbittracker": {
+    "ActivityTrackeraELhs": {
       "service": "Pinpoint",
       "providerPlugin": "awscloudformation"
     }

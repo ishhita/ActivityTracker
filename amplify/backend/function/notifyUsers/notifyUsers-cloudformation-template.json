@@ -20,13 +20,13 @@
       "Type": "String",
       "Default": "authactivitytrackerbf35f7f5UserPoolId"
     },
-    "analyticshobbittrackerId": {
+    "analyticsActivityTrackeraELhsId": {
       "Type": "String",
-      "Default": "analyticshobbittrackerId"
+      "Default": "analyticsActivityTrackeraELhsId"
     },
-    "analyticshobbittrackerRegion": {
+    "analyticsActivityTrackeraELhsRegion": {
       "Type": "String",
-      "Default": "analyticshobbittrackerRegion"
+      "Default": "analyticsActivityTrackeraELhsRegion"
     }
   },
   "Conditions": {
@@ -85,11 +85,11 @@
             "AUTH_ACTIVITYTRACKERBF35F7F5_USERPOOLID": {
               "Ref": "authactivitytrackerbf35f7f5UserPoolId"
             },
-            "ANALYTICS_HOBBITTRACKER_ID": {
-              "Ref": "analyticshobbittrackerId"
+            "ANALYTICS_ACTIVITYTRACKERAELHS_ID": {
+              "Ref": "analyticsActivityTrackeraELhsId"
             },
-            "ANALYTICS_HOBBITTRACKER_REGION": {
-              "Ref": "analyticshobbittrackerRegion"
+            "ANALYTICS_ACTIVITYTRACKERAELHS_REGION": {
+              "Ref": "analyticsActivityTrackeraELhsRegion"
             }
           }
         },
@@ -286,7 +286,7 @@
                     [
                       "arn:aws:mobiletargeting:",
                       {
-                        "Ref": "analyticshobbittrackerRegion"
+                        "Ref": "analyticsActivityTrackeraELhsRegion"
                       },
                       ":",
                       {
@@ -294,7 +294,7 @@
                       },
                       ":apps/",
                       {
-                        "Ref": "analyticshobbittrackerId"
+                        "Ref": "analyticsActivityTrackeraELhsId"
                       }
                     ]
                   ]
@@ -305,7 +305,7 @@
                     [
                       "arn:aws:mobiletargeting:",
                       {
-                        "Ref": "analyticshobbittrackerRegion"
+                        "Ref": "analyticsActivityTrackeraELhsRegion"
                       },
                       ":",
                       {
@@ -313,7 +313,7 @@
                       },
                       ":apps/",
                       {
-                        "Ref": "analyticshobbittrackerId"
+                        "Ref": "analyticsActivityTrackeraELhsId"
                       },
                       "/*"
                     ]

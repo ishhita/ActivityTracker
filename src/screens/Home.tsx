@@ -21,15 +21,11 @@ export default function Home(props: Props) {
   const profile = useProfile();
 
   useEffect(() => {
-    Analytics.updateEndpoint({
-      userId: props.email,
-    })
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
+    if (props.email) {
+      Analytics.updateEndpoint({
+        userId: props.email,
       });
+    }
 
     const bootstrap = async () => {
       const user = await profile.getUser(props.email);
