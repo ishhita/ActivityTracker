@@ -1,5 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {Button, Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  Button,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {StackNavigationProp} from '@react-navigation/stack';
 
 import {StackParams} from '../index';
@@ -7,16 +14,13 @@ import defaultActivities from '../utils/default-activity-list';
 import {useProfile} from '../store/UserStore';
 import {User} from '../../types/models';
 import {withOAuth} from 'aws-amplify-react-native';
-<<<<<<< HEAD
 //@ts-ignore
 import UserAvatar from '../images/user.png';
 import Animation from 'lottie-react-native';
 
-=======
 import DeviceInfo from 'react-native-device-info';
 import {Analytics} from 'aws-amplify';
 import {sendPush} from '../api/API';
->>>>>>> main
 
 type Props = {
   email: string;
@@ -70,26 +74,63 @@ export default function Home(props: Props) {
   return (
     <View>
       {/* <HobbitHole /> */}
-      <View style={{display: 'flex', flexDirection: 'row', alignSelf: 'flex-end'}}>
-        <Text style={{display: 'flex', alignSelf: 'center', fontWeight: 'bold', marginRight: 10}}>{props.email}</Text>
+      <View
+        style={{display: 'flex', flexDirection: 'row', alignSelf: 'flex-end'}}>
+        <Text
+          style={{
+            display: 'flex',
+            alignSelf: 'center',
+            fontWeight: 'bold',
+            marginRight: 10,
+          }}>
+          {props.email}
+        </Text>
         {/* <Image source={UserAvatar} style={{width: 50, height: 50}} /> */}
       </View>
       <Text style={{color: 'blue', fontSize: 30, textAlign: 'center'}}>
         {message}
       </Text>
+      {/* <Button
+        title="send push "
+        onPress={() => {
+          sendPush({message: 'hi bidy', title: 'hobit', users: [props.email]});
+        }}></Button> */}
       {/* <View
         style={{
           height: StyleSheet.hairlineWidth,
           backgroundColor: 'brown',
         }}></View> */}
 
-      <View style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-        <View style={{position: 'relative', display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
-          <Text style={{fontWeight: 'bold', position: 'absolute', top: 135, zIndex: 10, fontSize: 18, left: 45, color: '#893a77'}}>Activity Board</Text>
+      <View
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+        <View
+          style={{
+            position: 'relative',
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <Text
+            style={{
+              fontWeight: 'bold',
+              position: 'absolute',
+              top: 135,
+              zIndex: 10,
+              fontSize: 18,
+              left: 45,
+              color: '#893a77',
+            }}>
+            Activity Board
+          </Text>
           <Animation
             style={{
               height: 200,
-              width: 200
+              width: 200,
             }}
             source={require('../lottieJsons/activityboard.json')}
             autoPlay
@@ -101,21 +142,37 @@ export default function Home(props: Props) {
             flexDirection: 'row',
             flexWrap: 'wrap',
             justifyContent: 'center',
-            alignContent: 'center'
+            alignContent: 'center',
           }}>
           {defaultActivities.map(({id, name}) => (
             <View style={{margin: 4, padding: 8}} key={id}>
               <TouchableOpacity
-                activeOpacity={.8}
-                style={{ width: 100, height: 100, borderRadius: 50, backgroundColor: 'white',  justifyContent: 'center', display:'flex', elevation: 10, shadowOpacity: 10}}
+                activeOpacity={0.8}
+                style={{
+                  width: 100,
+                  height: 100,
+                  borderRadius: 50,
+                  backgroundColor: 'white',
+                  justifyContent: 'center',
+                  display: 'flex',
+                  elevation: 10,
+                  shadowOpacity: 10,
+                }}
                 onPress={() => {
                   props.navigation.navigate('Activity', {
                     id: id,
                     name: name,
                   });
-                }}
-                >
-                  <Text style={{color: '#893a77', alignSelf: 'center', fontWeight: 'bold', fontSize: 16}}>{name}</Text>
+                }}>
+                <Text
+                  style={{
+                    color: '#893a77',
+                    alignSelf: 'center',
+                    fontWeight: 'bold',
+                    fontSize: 16,
+                  }}>
+                  {name}
+                </Text>
               </TouchableOpacity>
             </View>
           ))}
