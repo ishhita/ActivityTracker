@@ -7,8 +7,6 @@ See the License for the specific language governing permissions and limitations 
 */
 
 /* Amplify Params - DO NOT EDIT
-	ANALYTICS_HOBBITTRACKER_ID
-	ANALYTICS_HOBBITTRACKER_REGION
 	AUTH_ACTIVITYTRACKERBF35F7F5_USERPOOLID
 	ENV
 	REGION

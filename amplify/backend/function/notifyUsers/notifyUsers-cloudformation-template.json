@@ -19,14 +19,6 @@
     "authactivitytrackerbf35f7f5UserPoolId": {
       "Type": "String",
       "Default": "authactivitytrackerbf35f7f5UserPoolId"
-    },
-    "analyticshobbittrackerId": {
-      "Type": "String",
-      "Default": "analyticshobbittrackerId"
-    },
-    "analyticshobbittrackerRegion": {
-      "Type": "String",
-      "Default": "analyticshobbittrackerRegion"
     }
   },
   "Conditions": {
@@ -84,12 +76,6 @@
             },
             "AUTH_ACTIVITYTRACKERBF35F7F5_USERPOOLID": {
               "Ref": "authactivitytrackerbf35f7f5UserPoolId"
-            },
-            "ANALYTICS_HOBBITTRACKER_ID": {
-              "Ref": "analyticshobbittrackerId"
-            },
-            "ANALYTICS_HOBBITTRACKER_REGION": {
-              "Ref": "analyticshobbittrackerRegion"
             }
           }
         },
@@ -267,55 +253,6 @@
                       {
                         "Ref": "authactivitytrackerbf35f7f5UserPoolId"
                       }
-                    ]
-                  ]
-                }
-              ]
-            },
-            {
-              "Effect": "Allow",
-              "Action": [
-                "mobiletargeting:Put*",
-                "mobiletargeting:Create*",
-                "mobiletargeting:Send*"
-              ],
-              "Resource": [
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:aws:mobiletargeting:",
-                      {
-                        "Ref": "analyticshobbittrackerRegion"
-                      },
-                      ":",
-                      {
-                        "Ref": "AWS::AccountId"
-                      },
-                      ":apps/",
-                      {
-                        "Ref": "analyticshobbittrackerId"
-                      }
-                    ]
-                  ]
-                },
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:aws:mobiletargeting:",
-                      {
-                        "Ref": "analyticshobbittrackerRegion"
-                      },
-                      ":",
-                      {
-                        "Ref": "AWS::AccountId"
-                      },
-                      ":apps/",
-                      {
-                        "Ref": "analyticshobbittrackerId"
-                      },
-                      "/*"
                     ]
                   ]
                 }
