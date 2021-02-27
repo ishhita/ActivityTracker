@@ -1,123 +1,143 @@
 {
-    "auth": {
-        "activitytrackerbf35f7f5": {
-            "service": "Cognito",
-            "providerPlugin": "awscloudformation",
-            "dependsOn": [],
-            "customAuth": false
+  "auth": {
+    "activitytrackerbf35f7f5": {
+      "service": "Cognito",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "customAuth": false
+    }
+  },
+  "storage": {
+    "activityTable": {
+      "service": "DynamoDB",
+      "providerPlugin": "awscloudformation"
+    }
+  },
+  "function": {
+    "getUserProfile": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "storage",
+          "resourceName": "activityTable",
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "attributeEnvMap": {
+            "Name": "TABLE_NAME",
+            "Arn": "TABLE_ARN"
+          }
         }
+      ]
     },
-    "storage": {
-        "activityTable": {
-            "service": "DynamoDB",
-            "providerPlugin": "awscloudformation"
+    "getActivities": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "storage",
+          "resourceName": "activityTable",
+          "attributes": [
+            "Name",
+            "Arn"
+          ]
         }
+      ]
     },
-    "function": {
-        "getUserProfile": {
-            "build": true,
-            "providerPlugin": "awscloudformation",
-            "service": "Lambda",
-            "dependsOn": [
-                {
-                    "category": "storage",
-                    "resourceName": "activityTable",
-                    "attributes": [
-                        "Name",
-                        "Arn"
-                    ],
-                    "attributeEnvMap": {
-                        "Name": "TABLE_NAME",
-                        "Arn": "TABLE_ARN"
-                    }
-                }
-            ]
+    "logActivity": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "storage",
+          "resourceName": "activityTable",
+          "attributes": [
+            "Name",
+            "Arn"
+          ]
+        }
+      ]
+    },
+    "notifyUsers": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "auth",
+          "resourceName": "activitytrackerbf35f7f5",
+          "attributes": [
+            "UserPoolId"
+          ]
         },
-        "getActivities": {
-            "build": true,
-            "providerPlugin": "awscloudformation",
-            "service": "Lambda",
-            "dependsOn": [
-                {
-                    "category": "storage",
-                    "resourceName": "activityTable",
-                    "attributes": [
-                        "Name",
-                        "Arn"
-                    ]
-                }
-            ]
-        },
-        "logActivity": {
-            "build": true,
-            "providerPlugin": "awscloudformation",
-            "service": "Lambda",
-            "dependsOn": [
-                {
-                    "category": "storage",
-                    "resourceName": "activityTable",
-                    "attributes": [
-                        "Name",
-                        "Arn"
-                    ]
-                }
-            ]
-        },
-        "notifyUsers": {
-            "build": true,
-            "providerPlugin": "awscloudformation",
-            "service": "Lambda",
-            "dependsOn": [
-                {
-                    "category": "auth",
-                    "resourceName": "activitytrackerbf35f7f5",
-                    "attributes": [
-                        "UserPoolId"
-                    ]
-                }
-            ]
+        {
+          "category": "analytics",
+          "resourceName": "ActivityTrackeraELhs",
+          "attributes": [
+            "Id",
+            "Region"
+          ]
         }
-    },
-    "api": {
-        "activityStore": {
-            "service": "API Gateway",
-            "providerPlugin": "awscloudformation",
-            "dependsOn": [
-                {
-                    "category": "function",
-                    "resourceName": "getUserProfile",
-                    "attributes": [
-                        "Name",
-                        "Arn"
-                    ]
-                },
-                {
-                    "category": "function",
-                    "resourceName": "getActivities",
-                    "attributes": [
-                        "Name",
-                        "Arn"
-                    ]
-                },
-                {
-                    "category": "function",
-                    "resourceName": "logActivity",
-                    "attributes": [
-                        "Name",
-                        "Arn"
-                    ]
-                },
-                {
-                    "category": "function",
-                    "resourceName": "notifyUsers",
-                    "attributes": [
-                        "Name",
-                        "Arn"
-                    ]
-                }
-            ]
+      ]
+    }
+  },
+  "api": {
+    "activityStore": {
+      "service": "API Gateway",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [
+        {
+          "category": "function",
+          "resourceName": "getUserProfile",
+          "attributes": [
+            "Name",
+            "Arn"
+          ]
+        },
+        {
+          "category": "function",
+          "resourceName": "getActivities",
+          "attributes": [
+            "Name",
+            "Arn"
+          ]
+        },
+        {
+          "category": "function",
+          "resourceName": "logActivity",
+          "attributes": [
+            "Name",
+            "Arn"
+          ]
+        },
+        {
+          "category": "function",
+          "resourceName": "notifyUsers",
+          "attributes": [
+            "Name",
+            "Arn"
+          ]
         }
-    },
-    "notifications": {},
-    "analytics": {}
+      ]
+    }
+  },
+  "notifications": {
+    "ActivityTrackeraELhs": {
+      "service": "Pinpoint",
+      "channels": [
+        "FCM"
+      ]
+    }
+  },
+  "analytics": {
+    "ActivityTrackeraELhs": {
+      "service": "Pinpoint",
+      "providerPlugin": "awscloudformation"
+    }
+  }
 }

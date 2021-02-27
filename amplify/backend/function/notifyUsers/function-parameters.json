@@ -4,6 +4,11 @@
       "activitytrackerbf35f7f5": [
         "create"
       ]
+    },
+    "analytics": {
+      "ActivityTrackeraELhs": [
+        "create"
+      ]
     }
   },
   "lambdaLayers": []

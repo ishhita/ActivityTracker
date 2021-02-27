@@ -19,6 +19,14 @@
     "authactivitytrackerbf35f7f5UserPoolId": {
       "Type": "String",
       "Default": "authactivitytrackerbf35f7f5UserPoolId"
+    },
+    "analyticsActivityTrackeraELhsId": {
+      "Type": "String",
+      "Default": "analyticsActivityTrackeraELhsId"
+    },
+    "analyticsActivityTrackeraELhsRegion": {
+      "Type": "String",
+      "Default": "analyticsActivityTrackeraELhsRegion"
     }
   },
   "Conditions": {
@@ -76,6 +84,12 @@
             },
             "AUTH_ACTIVITYTRACKERBF35F7F5_USERPOOLID": {
               "Ref": "authactivitytrackerbf35f7f5UserPoolId"
+            },
+            "ANALYTICS_ACTIVITYTRACKERAELHS_ID": {
+              "Ref": "analyticsActivityTrackeraELhsId"
+            },
+            "ANALYTICS_ACTIVITYTRACKERAELHS_REGION": {
+              "Ref": "analyticsActivityTrackeraELhsRegion"
             }
           }
         },
@@ -253,6 +267,55 @@
                       {
                         "Ref": "authactivitytrackerbf35f7f5UserPoolId"
                       }
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "mobiletargeting:Put*",
+                "mobiletargeting:Create*",
+                "mobiletargeting:Send*"
+              ],
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:mobiletargeting:",
+                      {
+                        "Ref": "analyticsActivityTrackeraELhsRegion"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":apps/",
+                      {
+                        "Ref": "analyticsActivityTrackeraELhsId"
+                      }
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:mobiletargeting:",
+                      {
+                        "Ref": "analyticsActivityTrackeraELhsRegion"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":apps/",
+                      {
+                        "Ref": "analyticsActivityTrackeraELhsId"
+                      },
+                      "/*"
                     ]
                   ]
                 }

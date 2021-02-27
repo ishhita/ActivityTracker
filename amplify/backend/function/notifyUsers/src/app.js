@@ -7,6 +7,8 @@ See the License for the specific language governing permissions and limitations 
 */
 
 /* Amplify Params - DO NOT EDIT
+	ANALYTICS_ACTIVITYTRACKERAELHS_ID
+	ANALYTICS_ACTIVITYTRACKERAELHS_REGION
 	AUTH_ACTIVITYTRACKERBF35F7F5_USERPOOLID
 	ENV
 	REGION
@@ -32,32 +34,23 @@ app.post('/notify', function (req, res) {
   var pinpoint = new AWS.Pinpoint();
   const {message, title, users} = req.body;
   const hash = users.reduce((map, curr) => {
-    map[curr] = {
-      BodyOverride: 'BodyOverride - dev',
-      TitleOverride: ' Dev Title',
-    };
+    map[curr] = {};
     return map;
   }, {});
-  console.log(process.env.PINPOINT_ID, 'pinpoint id');
 
   var params = {
     ApplicationId: process.env.PINPOINT_ID,
     SendUsersMessageRequest: {
       MessageConfiguration: {
         DefaultMessage: {
-          Body: 'DefaultMessage - dev',
-        },
-        DefaultPushNotificationMessage: {
-          Action: 'OPEN_APP',
-          Body: 'DefaultPushNotificationMessage - dev',
-          SilentPush: false,
-          Title: 'Title - Dev',
+          Body: message,
         },
         GCMMessage: {
-          Action: 'OPEN_APP',
-          Body: 'GCMMessage - dev',
+          Action: 'URL',
+          Body: message,
           SilentPush: false,
-          Title: ' Dev',
+          Title: title,
+          Url: 'https://instagram.com',
         },
       },
       Users: hash,
