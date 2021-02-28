@@ -11,6 +11,7 @@ import Animation from 'lottie-react-native';
 
 import DeviceInfo from 'react-native-device-info';
 import {Analytics} from 'aws-amplify';
+import {ScrollView} from 'react-native-gesture-handler';
 
 type Props = {
   email: string;
@@ -55,7 +56,7 @@ export default function Home(props: Props) {
   };
 
   return (
-    <View>
+    <ScrollView>
       <View
         style={{display: 'flex', flexDirection: 'row', alignSelf: 'flex-end'}}>
         <Text
@@ -116,7 +117,12 @@ export default function Home(props: Props) {
             alignContent: 'center',
           }}>
           {defaultActivities.map(({id, name}) => (
-            <View style={{margin: 4, padding: 8}} key={id}>
+            <View
+              style={{
+                margin: 4,
+                padding: 8,
+              }}
+              key={id}>
               <TouchableOpacity
                 activeOpacity={0.8}
                 style={{
@@ -149,6 +155,6 @@ export default function Home(props: Props) {
           ))}
         </View>
       </View>
-    </View>
+    </ScrollView>
   );
 }

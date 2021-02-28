@@ -13,6 +13,7 @@ import {Calendar} from 'react-native-calendars';
 import CheckBox from '@react-native-community/checkbox';
 import calendarImg from '../images/calendar.png';
 import {streakRanges} from 'date-streaks';
+import shareIcon from '../images/share.png';
 
 const marginProps = {
   marginTop: 10,
@@ -62,7 +63,7 @@ const Activity = (props: Props) => {
 
   const onShare = async () => {
     await Share.share({
-      message: 'activitytracker://share' + activityId + '/' + user.pk,
+      message: 'activitytracker://share/' + activityId + '/' + user.pk,
     });
   };
 
@@ -146,6 +147,7 @@ const Activity = (props: Props) => {
           display: 'flex',
           width: '100%',
           height: '100%',
+          position: 'relative',
         }}>
         <View
           style={{
@@ -219,7 +221,10 @@ const Activity = (props: Props) => {
                   marginRight: 20,
                 }}></Image>
               <View>
-                <Text>{new Date().toDateString()}</Text>
+                <Text>Have you done it today?</Text>
+                <Text style={{fontWeight: 'bold'}}>
+                  {new Date().toDateString()}
+                </Text>
               </View>
               <View style={{flex: 1}} />
               <View>
@@ -232,9 +237,8 @@ const Activity = (props: Props) => {
                   onFillColor={'#4DABEC'}
                   onTintColor={'#F4DCF8'}
                   animationDuration={2}
-                  style={{width: 40, height: 40}}
+                  style={{width: 40, height: 40, padding: 20}}
                   onAnimationType={'bounce'}
-                  // offAnimationType={''}
                 />
               </View>
             </View>
@@ -249,8 +253,24 @@ const Activity = (props: Props) => {
             alignItems: 'center',
           }}></View>
         <Calendar markedDates={map} markingType={'period'} />
-
-        <Button onPress={onShare} title="Do with Friends!" />
+      </View>
+      <View
+        style={{
+          position: 'absolute',
+          right: 10,
+          display: 'flex',
+          zIndex: 10,
+          elevation: 1,
+          padding: 10,
+        }}>
+        <TouchableOpacity onPress={onShare}>
+          <Image
+            source={shareIcon}
+            width={undefined}
+            height={undefined}
+            style={{height: 35, width: 35}}
+          />
+        </TouchableOpacity>
       </View>
     </ScrollView>
   );
