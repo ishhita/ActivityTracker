@@ -13,28 +13,6 @@ import Home from './screens/Home';
 import Splash from './screens/Splash';
 import Activity from './screens/Activity';
 
-PushNotification.onRegister((token) => {
-  console.log('onRegister', token);
-});
-PushNotification.onNotification((notification) => {
-  if (notification.foreground) {
-    console.log('onNotification foreground', notification);
-  } else {
-    console.log('onNotification background or closed', notification);
-  }
-  // extract the data passed in the push notification
-  // const data = JSON.parse(notification.data['pinpoint.jsonBody']);
-
-  // iOS only
-  // notification.finish(PushNotificationIOS.FetchResult.NoData);
-});
-PushNotification.onNotificationOpened((notification) => {
-  console.log('onNotificationOpened', notification);
-  // extract the data passed in the push notification
-  const data = JSON.parse(notification['pinpoint.jsonBody']);
-  console.log('onNotificationOpened data', data);
-});
-
 async function urlOpener(url: string, redirectUrl: string) {
   await InAppBrowser.isAvailable();
   // @ts-ignore
@@ -73,14 +51,27 @@ const App = (props: any) => {
   const email = oAuthUser?.attributes?.email;
 
   return (
-    <NavigationContainer>
+    <NavigationContainer
+      linking={{
+        prefixes: ['activitytracker://'],
+        config: {
+          screens: {
+            Invite: 'share/:activity/:userId',
+          },
+        },
+      }}>
       <Stack.Navigator>
         {email ? (
           <>
             <Stack.Screen name="Home">
               {(props) => <Home {...props} email={email} />}
             </Stack.Screen>
-            <Stack.Screen name="Activity" component={Activity}></Stack.Screen>
+            <Stack.Screen
+              name="Activity"
+              component={Activity}
+              options={({route}) => ({
+                title: route.params.name,
+              })}></Stack.Screen>
           </>
         ) : (
           <Stack.Screen name="Splash" component={Splash} />

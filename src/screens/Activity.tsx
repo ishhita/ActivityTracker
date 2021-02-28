@@ -1,15 +1,7 @@
-import {
-  Button,
-  Dimensions,
-  FlatList,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
-import React, {useState} from 'react';
+import {Button, Share, Text, ToastAndroid, View, Image} from 'react-native';
+import React, {useEffect, useState} from 'react';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RouteProp} from '@react-navigation/native';
-import ago from 's-ago';
 
 import {StackParams} from '..';
 import {useProfile} from '../store/UserStore';
@@ -17,7 +9,17 @@ import {useActivityLogs} from '../store/ActivityLogStore';
 import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 import activityJsonMapper from '../utils/activityJsonMapper';
 import Animation from 'lottie-react-native';
-import CalendarStrip from 'react-native-calendar-strip';
+import {Calendar} from 'react-native-calendars';
+import CheckBox from '@react-native-community/checkbox';
+import calendarImg from '../images/calendar.png';
+import {streakRanges} from 'date-streaks';
+
+const marginProps = {
+  marginTop: 10,
+  marginBottom: 10,
+  marginLeft: 10,
+  marginRight: 10,
+};
 
 type Props = {
   navigation: StackNavigationProp<StackParams, 'Activity'>;
@@ -28,10 +30,25 @@ const Activity = (props: Props) => {
   const activityName = props.route.params.name;
   const user = useProfile();
 
-  const [date, setDate] = useState('2021-02');
-
+  const [date, setDate] = useState('2021-');
+  const [mark, setMark] = useState(false);
   const isFavAlready = user.activities[activityId];
   const activity = useActivityLogs();
+
+  useEffect(() => {
+    activity.getActivityLog(user.pk, `${activityId}_${date}`, activityId);
+  }, []);
+
+  useEffect(() => {
+    if (mark) {
+      log().then(() => {
+        ToastAndroid.show(
+          `Yay! ${activityName} marked for today!`,
+          ToastAndroid.SHORT,
+        );
+      });
+    }
+  }, [mark]);
 
   const log = async () => {
     const date = new Date();
@@ -43,23 +60,84 @@ const Activity = (props: Props) => {
     });
   };
 
-  const getFromServer = () => {
-    activity.getActivityLog();
+  const onShare = async () => {
+    await Share.share({
+      message: 'activitytracker://share' + activityId + '/' + user.pk,
+    });
   };
+
   const json = activityJsonMapper[activityName];
-  const commitsData = [
-    {date: '2017-01-02', count: 1},
-    {date: '2017-01-03', count: 2},
-    {date: '2017-01-04', count: 3},
-    {date: '2017-01-05', count: 4},
-    {date: '2017-01-06', count: 5},
-    {date: '2017-01-30', count: 2},
-    {date: '2017-01-31', count: 3},
-    {date: '2017-03-01', count: 2},
-    {date: '2017-04-02', count: 4},
-    {date: '2017-03-05', count: 2},
-    {date: '2017-02-30', count: 4},
-  ];
+
+  const data = Object.keys(activity.logs[activityId] || {}).reduce(
+    (result, id) => {
+      const instance = activity.logs[activityId][id];
+      const iso = instance.sk.replace('activity_' + activityId + '_', '');
+      const date = iso.split('T')[0];
+      const count = (result[date] || 0) + instance.duration;
+      return {
+        ...result,
+        [date]: count,
+      };
+    },
+    {},
+  );
+
+  const commits = Object.keys(data).map((d) => ({
+    date: d,
+    count: data[d] / 60,
+  }));
+
+  const streaks = streakRanges({dates: commits.map((d) => new Date(d.date))});
+  const map = streaks.reduce((final, current) => {
+    const {start, end} = current;
+    const s = start.toISOString().split('T')[0];
+    const e = end && end.toISOString().split('T')[0];
+    if (!end) {
+      return {
+        ...final,
+        [s]: {
+          color: '#70d7c7',
+          textColor: 'white',
+          startingDay: true,
+          endingDay: true,
+        },
+      };
+    }
+
+    const middleDates: {} = Array.from({length: current.duration - 2}).reduce(
+      (middle, _, index) => {
+        console.log(s);
+        const newDate = new Date(
+          new Date(s).getTime() + 3600 * 24 * (index + 1) * 1000,
+        )
+          .toISOString()
+          .split('T')[0];
+        return {
+          ...middle,
+          [newDate]: {
+            color: '#70d7c7',
+            textColor: 'white',
+          },
+        };
+      },
+      {},
+    );
+    return {
+      ...final,
+      [s]: {
+        color: '#70d7c7',
+        textColor: 'white',
+        startingDay: true,
+      },
+      [e]: {
+        color: '#70d7c7',
+        textColor: 'white',
+        endingDay: true,
+      },
+      ...middleDates,
+    };
+  }, {});
+
   return (
     <ScrollView>
       <View
@@ -84,9 +162,6 @@ const Activity = (props: Props) => {
             source={json}
             autoPlay
           />
-          <Text style={{fontWeight: 'bold', color: '#893a77', fontSize: 20}}>
-            {activityName}
-          </Text>
         </View>
         {!isFavAlready ? (
           <TouchableOpacity
@@ -98,10 +173,7 @@ const Activity = (props: Props) => {
               display: 'flex',
               elevation: 5,
               padding: 10,
-              marginTop: 20,
-              marginBottom: 20,
-              marginLeft: 10,
-              marginRight: 10,
+              ...marginProps,
             }}>
             <Text
               style={{
@@ -113,125 +185,72 @@ const Activity = (props: Props) => {
             </Text>
           </TouchableOpacity>
         ) : (
-          <View
-            style={{
-              backgroundColor: '#893a77',
-              justifyContent: 'center',
-              display: 'flex',
-              padding: 10,
-              marginTop: 20,
-              marginBottom: 20,
-              marginLeft: 10,
-              marginRight: 10,
-            }}>
-            <Text
-              style={{color: 'white', fontWeight: '100', alignSelf: 'center'}}>
-              Marked in your HobbitHole
-            </Text>
-          </View>
+          <>
+            <View
+              style={{
+                backgroundColor: '#893a77',
+                justifyContent: 'center',
+                display: 'flex',
+                padding: 10,
+                ...marginProps,
+              }}>
+              <Text
+                style={{
+                  color: 'white',
+                  fontWeight: '100',
+                  alignSelf: 'center',
+                }}>
+                Marked in your HobbitHole
+              </Text>
+            </View>
+            <View
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                ...marginProps,
+                alignItems: 'center',
+              }}>
+              <Image
+                source={calendarImg}
+                resizeMode="contain"
+                style={{
+                  width: 40,
+                  height: 40,
+                  marginRight: 20,
+                }}></Image>
+              <View>
+                <Text>{new Date().toDateString()}</Text>
+              </View>
+              <View style={{flex: 1}} />
+              <View>
+                <CheckBox
+                  value={mark}
+                  onValueChange={(value) => setMark(value)}
+                  hideBox={true}
+                  boxType={'circle'}
+                  onCheckColor={'#6F763F'}
+                  onFillColor={'#4DABEC'}
+                  onTintColor={'#F4DCF8'}
+                  animationDuration={2}
+                  style={{width: 40, height: 40}}
+                  onAnimationType={'bounce'}
+                  // offAnimationType={''}
+                />
+              </View>
+            </View>
+          </>
         )}
+
         <View
           style={{
             display: 'flex',
             margin: 10,
             justifyContent: 'center',
             alignItems: 'center',
-            flex: 1,
-          }}>
-          {/* @ts-ignore */}
-          {false && (
-            <CalendarStrip
-              scrollable
-              style={{height: 200, paddingTop: 20, paddingBottom: 10}}
-              calendarColor={'#3343CE'}
-              calendarHeaderStyle={{color: 'white'}}
-              dateNumberStyle={{color: 'white'}}
-              dateNameStyle={{color: 'white'}}
-              iconContainer={{flex: 0.1}}
-            />
-          )}
-        </View>
-        {/* <View
-          style={{
-            height: StyleSheet.hairlineWidth,
-            margin: 20,
-            backgroundColor: 'black',
           }}></View>
+        <Calendar markedDates={map} markingType={'period'} />
 
-        {isFavAlready && <Button title="I did this - yo!" onPress={log} />}
-        <View
-          style={{
-            height: StyleSheet.hairlineWidth,
-            margin: 20,
-            backgroundColor: 'black',
-          }}></View>
-        <Button
-          onPress={() => user.markActivityFav(activityId)}
-          title="mark fav and start tracking"></Button>
-      )}
-      <View
-        style={{
-          height: StyleSheet.hairlineWidth,
-          margin: 20,
-          backgroundColor: 'black',
-        }}></View>
-
-      {isFavAlready && <Button title="I did this - yo!" onPress={log} />}
-      <View
-        style={{
-          height: StyleSheet.hairlineWidth,
-          margin: 20,
-          backgroundColor: 'black',
-        }}></View>
-      <Button
-        title="go back to home"
-        onPress={props.navigation.goBack}></Button>
-
-      <View
-        style={{
-          height: StyleSheet.hairlineWidth,
-          margin: 20,
-          backgroundColor: 'black',
-        }}></View>
-
-      <View
-        style={{
-          height: StyleSheet.hairlineWidth,
-          margin: 20,
-          backgroundColor: 'black',
-        }}></View>
-      <Button onPress={getFromServer} title="get from server" />
-      <View
-        style={{
-          height: StyleSheet.hairlineWidth,
-          margin: 20,
-          backgroundColor: 'black',
-        }}></View>
-
-        <Text>All past activites</Text>
-        <FlatList
-          keyExtractor={(item) => item}
-          data={Object.keys(activity.logs[activityId] || {})}
-          renderItem={({item}) => {
-            const eachActivity = activity.logs[activityId][item];
-            return (
-              <View
-                key={eachActivity.sk}
-                style={{backgroundColor: '#afafaf', margin: 20, padding: 10}}>
-                <Text>
-                  done{' '}
-                  {ago(
-                    new Date(
-                      eachActivity.sk
-                        .replace('activity_', '')
-                        .replace(activityId + '_', ''),
-                    ),
-                  )}
-                </Text>
-                <Text>for --- {eachActivity.duration} mins</Text>
-              </View>
-            );
-          }}></FlatList> */}
+        <Button onPress={onShare} title="Do with Friends!" />
       </View>
     </ScrollView>
   );
